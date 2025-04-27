@@ -11,7 +11,7 @@ int main(void)
 		UART0_Init();
 		PORTB_Init();
 		UART5_ReceiveChar();
-//'hello world :)'
+	// no having fun in this repo >:(
     return 0;
 }
 
