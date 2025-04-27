@@ -11,8 +11,7 @@ int main(void)
 		UART0_Init();
 		PORTB_Init();
 		UART5_ReceiveChar();
-		// test run 5000000000000000000000000000000000000000000000000000000000000000000000000
-	asdasdfasdfasdf
+
     return 0;
 }
 
