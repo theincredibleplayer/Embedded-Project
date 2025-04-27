@@ -1,0 +1,16 @@
+*.bak
+project.axf
+ExtDll.iex
+code_m.o
+code_m.crf
+code_m.d
+uart_config.o
+uart_config.d
+uart_config.crf
+startup_tm4c123.o
+startup_tm4c123.d
+project.uvgui.incredibleplays
+project.map
+project.lnp
+project.htm
+project.build_log.htm
