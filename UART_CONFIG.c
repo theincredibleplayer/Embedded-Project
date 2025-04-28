@@ -2,7 +2,7 @@
 #include "C:\Keil\Labware\inc\tm4c123gh6pm.h"
 #include <stdint.h>
 
-
+// This is ibrahim's Branch
 
 void UART0_Init(void) {
     SYSCTL_RCGCUART_R |= 0x01;          // Enable UART0 clock
