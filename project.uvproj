@@ -420,6 +420,11 @@
               <FileType>1</FileType>
               <FilePath>.\UART_CONFIG.c</FilePath>
             </File>
+            <File>
+              <FileName>prasing.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\prasing.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
