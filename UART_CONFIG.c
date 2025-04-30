@@ -1,12 +1,16 @@
 #include "UART_CONFIG.h"
 #include "C:\Keil\Labware\inc\tm4c123gh6pm.h"
 #include <stdint.h>
+#include "GPIO_Systick.h"
 
 
 
 void UART0_Init(void) {
     SYSCTL_RCGCUART_R |= 0x01;          // Enable UART0 clock
+		while ((SYSCTL_PRUART_R & 0x01) == 0) {}   // Wait for UART0 to be ready
+
     SYSCTL_RCGCGPIO_R |= 0x01;          // Enable GPIOA clock
+		while ((SYSCTL_PRGPIO_R & 0x01) == 0) {}   // Wait for GPIOA to be ready
 
     UART0_CTL_R &= ~UART_CTL_UARTEN;    // Disable UART for config
     UART0_IBRD_R = 104;                 // Baud Rate Integer (16MHz, 9600bps)
@@ -31,7 +35,7 @@ void UART0_SendString(const char *str) {
     }
 }
 
-void UART0_SendNumber(int num) {
+void UART0_SendNumberInt(int num) {
     char buffer[10];
     int i = 0;
 
@@ -54,7 +58,44 @@ void UART0_SendNumber(int num) {
         UART0_SendChar(buffer[i]);
     }
 }
+// 4 points of precision
+void UART0_SendNumberFloat(float num) {
+    char buffer[10];
+    uint8_t i = 0;
+		uint8_t k = 0;
+		int16_t int_part = (int)num;
+		int16_t decimal_part = 0;
+    if(num == 0.0) {
+        UART0_SendChar('0');
+        return;
+    }
 
+    if(num < 0.0) {                       // Handle negative numbers
+        UART0_SendChar('-');
+        num = -num;
+    }
+		int_part = (int)num;																		//split the number into an int part and a decimal part
+		decimal_part = (num*10000.0) - (int_part*10000.0);			//
+		
+		for(k=0;k<4;k++){                    // convert decimal part to string (order is reversed), made using a for loop for padding
+				buffer[i++] = (decimal_part % 10) + '0';
+				decimal_part /= 10;
+		}
+		
+		buffer[i++] = '.'; //decimal point
+		
+	  if(int_part == 0) {
+				buffer[i++] = '0';
+    }else{
+				while(int_part > 0) {                  // convert int part to string (order is reversed)
+						buffer[i++] = (int_part % 10) + '0';
+						int_part /= 10;
+				}
+		}
+    while(i--) {                        // Send digits in correct order
+        UART0_SendChar(buffer[i]);
+    }
+}
 
 
 void UART5_Init(void) {
@@ -91,9 +132,3 @@ char *UART5_ReceiveString(char *string) {
     return string;
 }
 
-void PORTB_Init(void){
-	  SYSCTL_RCGCGPIO_R |= 0x02;
-    while((SYSCTL_PRGPIO_R & SYSCTL_PRGPIO_R1) == 0) { }
-    GPIO_PORTB_DIR_R |= 0x3F;
-    GPIO_PORTB_DEN_R |= 0x3F;
-}
