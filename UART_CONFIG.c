@@ -25,38 +25,6 @@ void UART0_SendChar(char c) {
     UART0_DR_R = c;
 }
 
-void UART0_SendString(const char *str) {
-    while(*str) {
-        UART0_SendChar(*str++);
-    }
-}
-
-void UART0_SendNumber(int num) {
-    char buffer[10];
-    int i = 0;
-
-    if(num == 0) {
-        UART0_SendChar('0');
-        return;
-    }
-
-    if(num < 0) {                       // Handle negative numbers
-        UART0_SendChar('-');
-        num = -num;
-    }
-
-    while(num > 0) {                    // Convert number to string (reverse order)
-        buffer[i++] = (num % 10) + '0';
-        num /= 10;
-    }
-
-    while(i--) {                        // Send digits in correct order
-        UART0_SendChar(buffer[i]);
-    }
-}
-
-
-
 void UART5_Init(void) {
 		SYSCTL_RCGCUART_R |= 0x20;
 		SYSCTL_RCGCGPIO_R |= 0x10;
@@ -78,17 +46,6 @@ char UART5_ReceiveChar(void) {
 			}
 			UART0_SendChar((char)(UART5_DR_R & 0xFF));
     return (char)(UART5_DR_R & 0xFF);
-}
-
-char *UART5_ReceiveString(char *string) {
-		int i=0;
-		while((char)(UART5_DR_R & 0xFF) != '\n'){
-			while (UART5_FR_R & UART_FR_RXFE){
-			}
-			*(string + i++) = (char)(UART5_DR_R & 0xFF);
-			UART0_SendChar((char)(UART5_DR_R & 0xFF));
-		}
-    return string;
 }
 
 void PORTB_Init(void){

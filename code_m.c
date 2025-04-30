@@ -2,7 +2,6 @@
 #include <stdint.h>
 #include "UART_CONFIG.h"
 
-//hello
 
 
 int main(void)
@@ -11,8 +10,7 @@ int main(void)
 		UART0_Init();
 		PORTB_Init();
 		UART5_ReceiveChar();
-	  // no having fun in this repo >:(
-    //'hello world :)'''
+
     return 0;
 }
 
