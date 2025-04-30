@@ -3,12 +3,22 @@
 #include "UART_CONFIG.h"
 #include "stdio.h"
 
-char GPS_ReqName[]="$GPRMC,";
+char GPS_ReqName[]="$GPRMC,";// the log name we want 
 char GPS[80];
 char GPS_Array[20][20];
 char *token;
+<<<<<<< Updated upstream
 float My_Longitude, My_Latitude;
+=======
+float My_Longitude, My_Latitude;//longitude and latitude from the gps in float form 
+float Loc_Longitude[5], Loc_Latitude[5]; //the lat. & long. of pre-saved locations
+char Location_Names[6][20]; // 5 locations indexed from 0 to 4 and a sixth array called "you are far" when no place is in range
+char Location_index = 5; //index to choose location ,set initially to 5 which is "you are far"
+float R = 6378000; // radius of the globe
+float Distance_Arr[5];
+>>>>>>> Stashed changes
 
+//function that takes the gps output and checks GPRMC
 void GPS_ReadData(){
 	char Inputchar;
 	char i=0;
@@ -35,7 +45,7 @@ void GPS_ReadData(){
 	
 		
 }
-
+// transforms string into elements in an array and we use the data we want 
 void GPS_list(){
 
 char No_tokens=0;
