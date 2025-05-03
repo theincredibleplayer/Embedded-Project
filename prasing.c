@@ -1,9 +1,13 @@
+#include "prasing.h"
 #include <stdlib.h>
 #include <stdint.h>
 #include <string.h>
 #include "UART_CONFIG.h"
 #include "stdio.h"
 #include "parsing.h"
+#include "math.h" // to use mathematical functions to calculate distance
+
+
 
 
 char GPS_ReqName[]="$GPRMC,";// the log name we want 
@@ -69,9 +73,34 @@ char No_tokens=0;
 	
 	}
 
-
-
 }
+
+// calculates the distance and checks which location is near
+void Distance(){
+	char i = 0;
+	float My_X = R * My_Longitude;
+	float My_Y = R * My_Latitude;
+	while(i < 5){
+	float Loc_X = R * Loc_Longitude[i];	
+	float Loc_Y = R * Loc_Latitude[i];	
+	float vec_X = My_X - Loc_X;
+	float vec_Y = My_Y - Loc_Y;
+	float distance = sqrt(pow(vec_X,2) + pow(vec_Y,2));
+	Distance_Arr[i] = distance;
+	if (distance <= 10) Location_index = i;
+	}
+}
+
+
+// sends the location to the LCD
+/*
+void Location_Identification(char index){
+ char My_Location = strcpy(My_Location,Location_Names[Location_index]);
+ UART0_SendString(My_Location);
+
+} */
+
+
 
 
 
