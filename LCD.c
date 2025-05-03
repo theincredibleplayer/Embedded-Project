@@ -14,106 +14,88 @@
 // D7 = PB0
 
 void delay_ms(long milliseconds);
-
-void sendToDataPort(unsigned char data);  //Maps each bit of the data byte to the correct Port B pin 
-
-void writeLCDData(unsigned char data); //Sends data (a character) to be displayed on the LCD.
-
-void sendLCDCommand(unsigned char command); //Sends a command to the LCD (clear display, set cursor position).
-
-void writeLCDString(char *str, unsigned char length); //Writes a string of given length to the LCD.
-
-void initializeLCD(void); //Sends standard initialization commands to configure the LCD display.
+void sendToDataPort(unsigned char data);
+void writeLCDData(unsigned char data);
+void sendLCDCommand(unsigned char command);
+void writeLCDString(char *str, unsigned char length);
+void initializeLCD(void);
 
 int main() 
 {
-    // Enable clock for PORTB and PORTD 
-    SYSCTL->RCGCGPIO = SYSCTL->RCGCGPIO | (1<<1) | (1<<3);  // PORTB (bit1), PORTD (bit3)
+    SYSCTL_RCGCGPIO_R |= (1<<1) | (1<<3);  // Enable clock for PORTB and PORTD
 
-    // Digital enable for all pins
-    GPIOB->DEN |= (1<<0) | (1<<1) | (1<<2) | (1<<3) | (1<<4) | (1<<5) | (1<<6) | (1<<7);  // D0-D7
-    GPIOD->DEN |= (1<<0) | (1<<1) | (1<<2);  // RS, RW, EN
+    GPIO_PORTB_DEN_R |= 0xFF;  // Enable digital function for PB0-PB7
+    GPIO_PORTD_DEN_R |= 0x07;  // Enable digital function for PD0-PD2
 
-    // Set direction for all pins (output)
-    GPIOB->DIR |= (1<<0) | (1<<1) | (1<<2) | (1<<3) | (1<<4) | (1<<5) | (1<<6) | (1<<7);  // D0-D7
-    GPIOD->DIR |= (1<<0) | (1<<1) | (1<<2);  // RS, RW, EN
-    
+    GPIO_PORTB_DIR_R |= 0xFF;  // Set PB0-PB7 as output
+    GPIO_PORTD_DIR_R |= 0x07;  // Set PD0-PD2 as output
+
     delay_ms(10000);
     initializeLCD();
-    sendLCDCommand(0x80); // cursor to first row and first column
-    writeLCDString("Ibrahim", 7); // test
-    
-    while(1)
-    {
-    }
+    sendLCDCommand(0x80);  // Move cursor to first row, first column
+    writeLCDString("Ibrahim", 7);
+
+    while(1) {}
 }
 
 void writeLCDData(unsigned char data)
 {
     sendToDataPort(data);
-    GPIOD->DATA &= (~1<<1);    // R/W low for write
-    GPIOD->DATA |= (1<<0);     // RS high for data
-    GPIOD->DATA |= (1<<2);     // EN high
+    GPIO_PORTD_DATA_R &= ~(1<<1);  // RW = 0 (write)
+    GPIO_PORTD_DATA_R |=  (1<<0);  // RS = 1 (data)
+    GPIO_PORTD_DATA_R |=  (1<<2);  // EN = 1
     delay_ms(10000);
-    GPIOD->DATA &= (~1<<2);    // EN low
+    GPIO_PORTD_DATA_R &= ~(1<<2);  // EN = 0
 }
 
 void sendLCDCommand(unsigned char command)
 {
     sendToDataPort(command);
-    GPIOD->DATA &= (~(1<<1));  // R/W low
-    GPIOD->DATA &= (~(1<<0));  // RS low for command
-    GPIOD->DATA |= (1<<2);     // EN high
+    GPIO_PORTD_DATA_R &= ~(1<<1);  // RW = 0
+    GPIO_PORTD_DATA_R &= ~(1<<0);  // RS = 0 (command)
+    GPIO_PORTD_DATA_R |=  (1<<2);  // EN = 1
     delay_ms(10000);
-    GPIOD->DATA &= (~(1<<2));  // EN low
+    GPIO_PORTD_DATA_R &= ~(1<<2);  // EN = 0
 }
 
-void writeLCDString(char *str, unsigned char length) 
+void writeLCDString(char *str, unsigned char length)
 {
-    char i;
-    for(i=0; i<length; i++) 
-    {
+	char i;
+    for( i = 0; i < length; i++) {
         writeLCDData(str[i]);
     }
 }
 
 void initializeLCD(void)
 {
-    sendLCDCommand(0x38);    // 8-bit mode, 2 lines, 5x8 font
-    sendLCDCommand(0x06);    // Entry mode: increment cursor
-    sendLCDCommand(0x0C);    // Display on, cursor off
-    sendLCDCommand(0x01);    // Clear display
+    sendLCDCommand(0x38);  // 8-bit, 2 line, 5x8 font
+    sendLCDCommand(0x06);  // Increment cursor
+    sendLCDCommand(0x0C);  // Display on, cursor off
+    sendLCDCommand(0x01);  // Clear display
 }
 
 void sendToDataPort(unsigned char data)
 {
-    // Map each data bit to the correct GPIO pin
-    if((data & 0x01) == 0x01) { GPIOB->DATA |= (1<<7); }  // D0
-    else { GPIOB->DATA &= (~(1<<7)); }
-    
-    if((data & 0x02) == 0x02) { GPIOB->DATA |= (1<<6); }  // D1
-    else { GPIOB->DATA &= (~(1<<6)); }
-    
-    if((data & 0x04) == 0x04) { GPIOB->DATA |= (1<<5); }  // D2
-    else { GPIOB->DATA &= (~(1<<5)); }
-    
-    if((data & 0x08) == 0x08) { GPIOB->DATA |= (1<<4); }  // D3
-    else { GPIOB->DATA &= (~(1<<4)); }
-    
-    if((data & 0x10) == 0x10) { GPIOB->DATA |= (1<<3); }  // D4
-    else { GPIOB->DATA &= (~(1<<3)); }
-    
-    if((data & 0x20) == 0x20) { GPIOB->DATA |= (1<<2); }  // D5
-    else { GPIOB->DATA &= (~(1<<2)); }
-    
-    if((data & 0x40) == 0x40) { GPIOB->DATA |= (1<<1); }  // D6
-    else { GPIOB->DATA &= (~(1<<1)); }
-    
-    if((data & 0x80) == 0x80) { GPIOB->DATA |= (1<<0); }  // D7
-    else { GPIOB->DATA &= (~(1<<0)); }
+    // Mapping data bits to PB7-PB0
+    if(data & 0x01) GPIO_PORTB_DATA_R |= (1<<7);
+   	else GPIO_PORTB_DATA_R &= ~(1<<7);
+    if(data & 0x02) GPIO_PORTB_DATA_R |= (1<<6);
+  	else GPIO_PORTB_DATA_R &= ~(1<<6);
+    if(data & 0x04) GPIO_PORTB_DATA_R |= (1<<5);
+  	else GPIO_PORTB_DATA_R &= ~(1<<5);
+    if(data & 0x08) GPIO_PORTB_DATA_R |= (1<<4);
+  	else GPIO_PORTB_DATA_R &= ~(1<<4);
+    if(data & 0x10) GPIO_PORTB_DATA_R |= (1<<3);
+  	else GPIO_PORTB_DATA_R &= ~(1<<3);
+    if(data & 0x20) GPIO_PORTB_DATA_R |= (1<<2); 
+	  else GPIO_PORTB_DATA_R &= ~(1<<2);
+    if(data & 0x40) GPIO_PORTB_DATA_R |= (1<<1); 
+	  else GPIO_PORTB_DATA_R &= ~(1<<1);
+    if(data & 0x80) GPIO_PORTB_DATA_R |= (1<<0); 
+	  else GPIO_PORTB_DATA_R &= ~(1<<0);
 }
 
 void delay_ms(long milliseconds)
-{ 
+{
     while(milliseconds--);
 }
