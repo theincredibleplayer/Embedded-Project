@@ -3,7 +3,7 @@
 
 extern char GPS_ReqName[];
 extern char GPS[80];
-extern char GPS_Array[20][20];
+extern char GPS_Array[12][15];
 extern char *token;
 extern float My_Longitude, My_Latitude;
 extern float Loc_Longitude[5], Loc_Latitude[5];

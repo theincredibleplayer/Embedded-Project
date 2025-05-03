@@ -2,6 +2,7 @@
 #include "C:\Keil\Labware\inc\tm4c123gh6pm.h"
 #include <stdint.h>
 #include "GPIO_Systick.h"
+#include <math.h>  
 
 
 
@@ -59,25 +60,24 @@ void UART0_SendNumberInt(int num) {
     }
 }
 // 4 points of precision
-void UART0_SendNumberFloat(float num) {
-    char buffer[10];
+void UART0_SendNumberFloat(float num,uint8_t precision) {
+    char buffer[10]="";
     uint8_t i = 0;
 		uint8_t k = 0;
-		int16_t int_part = (int)num;
-		int16_t decimal_part = 0;
+		int32_t int_part = (int)num;
+		int32_t decimal_part = 0;
     if(num == 0.0) {
         UART0_SendChar('0');
         return;
     }
-
     if(num < 0.0) {                       // Handle negative numbers
         UART0_SendChar('-');
         num = -num;
     }
 		int_part = (int)num;																		//split the number into an int part and a decimal part
-		decimal_part = (num*10000.0) - (int_part*10000.0);			//
+		decimal_part = (num*pow(10, precision)) - (int_part*pow(10, precision));			//
 		
-		for(k=0;k<4;k++){                    // convert decimal part to string (order is reversed), made using a for loop for padding
+		for(k=0;k<precision;k++){                    // convert decimal part to string (order is reversed), made using a for loop for padding
 				buffer[i++] = (decimal_part % 10) + '0';
 				decimal_part /= 10;
 		}
@@ -95,6 +95,10 @@ void UART0_SendNumberFloat(float num) {
     while(i--) {                        // Send digits in correct order
         UART0_SendChar(buffer[i]);
     }
+}
+void UART0_SendNewLine(){
+		UART0_SendChar('\r');
+		UART0_SendChar('\n');
 }
 
 

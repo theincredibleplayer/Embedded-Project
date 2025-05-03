@@ -12,9 +12,13 @@ int main(void)
 		PORTB_Init();
 		
 		//UART5_ReceiveChar();
-		//GPS_ReadData();
-		//GPS_list();
-
+		GPS_ReadData();
+		GPS_list();
+		UART0_SendNewLine();
+		UART0_SendNumberFloat(My_Longitude,4);
+		UART0_SendNewLine();
+		UART0_SendNumberFloat(My_Longitude,4);
+		while(1);
     return 0;
 }
 
