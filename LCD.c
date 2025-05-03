@@ -14,11 +14,16 @@
 // D7 = PB0
 
 void delay_ms(long milliseconds);
-void sendToDataPort(unsigned char data);
-void writeLCDData(unsigned char data);
-void sendLCDCommand(unsigned char command);
-void writeLCDString(char *str, unsigned char length);
-void initializeLCD(void);
+
+void sendToDataPort(unsigned char data);  //Maps each bit of the data byte to the correct Port B pin 
+
+void writeLCDData(unsigned char data); //Sends data (a character) to be displayed on the LCD.
+
+void sendLCDCommand(unsigned char command); //Sends a command to the LCD (clear display, set cursor position).
+
+void writeLCDString(char *str, unsigned char length); //Writes a string of given length to the LCD.
+
+void initializeLCD(void); //Sends standard initialization commands to configure the LCD display.
 
 int main() 
 {
