@@ -6,7 +6,7 @@
 #include "stdio.h"
 #include "parsing.h"
 #include "math.h" // to use mathematical functions to calculate distance
-
+#define pi 3.14159
 
 
 
@@ -74,18 +74,29 @@ char No_tokens=0;
 	}
 
 }
+// this function is to convert decimal lat. & long. to degrees in case input is already in degrees this func will be neglected
+/*float CoorInDegree(float angle)
+{
+	int degree = (int)angle / 100;
+	float minutes = angle - (float)degree * 100;
+	return(degree + (minutes / 60));
+}*/
+
 
 // calculates the distance and checks which location is near
 void Distance(){
 	char i = 0;
-	float My_X = R * My_Longitude;
-	float My_Y = R * My_Latitude;
+
+	// converting degrees to radians
+	float My_Rad_Longitude = My_Longitude * pi / 180;
+	float My_Rad_Latitude = My_Latitude * pi / 180;
 	while(i < 5){
-	float Loc_X = R * Loc_Longitude[i];	
-	float Loc_Y = R * Loc_Latitude[i];	
-	float vec_X = My_X - Loc_X;
-	float vec_Y = My_Y - Loc_Y;
-	float distance = sqrt(pow(vec_X,2) + pow(vec_Y,2));
+	float Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
+	float Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
+	// using Harvsine law
+	float a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
+	float c = 2 * atan2(sqrt(a),sqrt(1-a));
+	float distance = R * c;
 	Distance_Arr[i] = distance;
 	if (distance <= 10) Location_index = i;
 	}
@@ -99,19 +110,3 @@ void Location_Identification(char index){
  UART0_SendString(My_Location);
 
 } */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
