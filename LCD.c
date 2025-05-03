@@ -14,7 +14,9 @@ void write_LCD_String(char *str, unsigned char length); //Writes a string of giv
 
 void initialize_LCD(void); //Sends standard initialization commands to configure the LCD display.
 
-int main() 
+void initialize_LCD_Ports(void);
+
+void initialize_LCD_Ports(void)
 {
     SYSCTL_RCGCGPIO_R |= (1<<1) | (1<<3);  // Enable clock for PORTB and PORTD
 
