@@ -13,6 +13,6 @@ void write_LCD_String(char *str, unsigned char length); //Writes a string of giv
 
 void initialize_LCD(void); //Sends standard initialization commands to configure the LCD display.
 
-void initialize_LCD_Ports(void);
+void initialiaze_LCD_Ports(void);
 
 #endif 

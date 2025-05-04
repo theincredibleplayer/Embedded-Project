@@ -3,6 +3,7 @@
 #include "UART_CONFIG.h"
 #include "parsing.h"
 #include "GPIO_Systick.h"
+#include "LCD.h"
 
 
 int main(void)
@@ -11,8 +12,8 @@ int main(void)
 		UART5_Init();
 		UART0_Init();
 		PORTB_Init();
-
-
+		initialize_LCD_Ports();
+		write_LCD_String("testing...testing",17);
 		//UART5_ReceiveChar();
 		GPS_ReadData();
 		GPS_list();

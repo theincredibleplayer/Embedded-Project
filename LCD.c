@@ -15,7 +15,6 @@ void initialize_LCD_Ports(void)
     delay_ms(10000);
     initialize_LCD();
     send_LCD_Command(0x80);       // Move cursor to first row, first column
-    write_LCD_String("Ibrahim", 7);
 }
 
 void write_LCD_Data(unsigned char data)
