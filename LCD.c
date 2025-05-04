@@ -1,56 +1,51 @@
 #include "C:\Keil\Labware\inc\tm4c123gh6pm.h"
 #include <stdint.h>
 #include "LCD.h"
-// RS = PD0 ; RW = PD1 ; EN = PD2 ; D4 = PB3 ; D5 = PB2 ; D6 = PB1 ; D7 = PB0
+
+// D4-D7 = PB0-PB3, RS = PB4, EN = PB5
 
 void initialize_LCD_Ports(void)
 {
-    SYSCTL_RCGCGPIO_R |= (1<<1) | (1<<3);  // Enable clock for PORTB and PORTD
+    SYSCTL_RCGCGPIO_R |= (1<<1);  // Enable clock for PORTB
+    while((SYSCTL_PRGPIO_R & (1<<1)) == 0);  // Wait for clock to stabilize
 
-    GPIO_PORTB_DEN_R |= 0x0F;  // Enable digital function for PB0-PB3
-    GPIO_PORTD_DEN_R |= 0x07;  // Enable digital function for PD0-PD2
-
-    GPIO_PORTB_DIR_R |= 0x0F;  // Set PB0-PB3 as output
-    GPIO_PORTD_DIR_R |= 0x07;  // Set PD0-PD2 as output
+    GPIO_PORTB_DEN_R |= 0x3F;     // Enable digital function for PB0-PB5
+    GPIO_PORTB_DIR_R |= 0x3F;     // Set PB0-PB5 as output
 
     delay_ms(10000);
     initialize_LCD();
-    send_LCD_Command(0x80);  // Move cursor to first row, first column
+    send_LCD_Command(0x80);       // Move cursor to first row, first column
     write_LCD_String("Ibrahim", 7);
 }
 
 void write_LCD_Data(unsigned char data)
 {
     send_To_Data_Port(data >> 4);         // Send high nibble
-    GPIO_PORTD_DATA_R &= ~(1<<1);         // RW = 0 (write)
-    GPIO_PORTD_DATA_R |=  (1<<0);         // RS = 1 (data)
-    GPIO_PORTD_DATA_R |=  (1<<2);         // EN = 1
+    GPIO_PORTB_DATA_R |=  (1<<4);         // RS = 1
+    GPIO_PORTB_DATA_R |=  (1<<5);         // EN = 1
     delay_ms(10000);
-    GPIO_PORTD_DATA_R &= ~(1<<2);         // EN = 0
+    GPIO_PORTB_DATA_R &= ~(1<<5);         // EN = 0
 
     send_To_Data_Port(data);              // Send low nibble
-    GPIO_PORTD_DATA_R &= ~(1<<1);         // RW = 0 (write)
-    GPIO_PORTD_DATA_R |=  (1<<0);         // RS = 1 (data)
-    GPIO_PORTD_DATA_R |=  (1<<2);         // EN = 1
+    GPIO_PORTB_DATA_R |=  (1<<4);         // RS = 1
+    GPIO_PORTB_DATA_R |=  (1<<5);         // EN = 1
     delay_ms(10000);
-    GPIO_PORTD_DATA_R &= ~(1<<2);         // EN = 0
+    GPIO_PORTB_DATA_R &= ~(1<<5);         // EN = 0
 }
 
 void send_LCD_Command(unsigned char command)
 {
     send_To_Data_Port(command >> 4);      // Send high nibble
-    GPIO_PORTD_DATA_R &= ~(1<<1);         // RW = 0
-    GPIO_PORTD_DATA_R &= ~(1<<0);         // RS = 0 (command)
-    GPIO_PORTD_DATA_R |=  (1<<2);         // EN = 1
+    GPIO_PORTB_DATA_R &= ~(1<<4);         // RS = 0
+    GPIO_PORTB_DATA_R |=  (1<<5);         // EN = 1
     delay_ms(10000);
-    GPIO_PORTD_DATA_R &= ~(1<<2);         // EN = 0
+    GPIO_PORTB_DATA_R &= ~(1<<5);         // EN = 0
 
     send_To_Data_Port(command);           // Send low nibble
-    GPIO_PORTD_DATA_R &= ~(1<<1);         // RW = 0
-    GPIO_PORTD_DATA_R &= ~(1<<0);         // RS = 0 (command)
-    GPIO_PORTD_DATA_R |=  (1<<2);         // EN = 1
+    GPIO_PORTB_DATA_R &= ~(1<<4);         // RS = 0
+    GPIO_PORTB_DATA_R |=  (1<<5);         // EN = 1
     delay_ms(10000);
-    GPIO_PORTD_DATA_R &= ~(1<<2);         // EN = 0
+    GPIO_PORTB_DATA_R &= ~(1<<5);         // EN = 0
 }
 
 void write_LCD_String(char *str, unsigned char length)
