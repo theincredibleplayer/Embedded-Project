@@ -18,15 +18,7 @@ project_Target 1.dep
 project.uvproj
 project.uvopt
 project.uvgui.Lenovo
-project.uvopt
-prasing.o
-prasing.crf
-prasing.d
-gpio_systick.crf
-gpio_systick.d
-gpio_systick.o
 *.crf
-*.o
 *.d
-prasing.d
 *.o
+*.User
