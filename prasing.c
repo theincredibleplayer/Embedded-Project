@@ -6,7 +6,7 @@
 #include "stdio.h"
 #include "parsing.h"
 #include "math.h" // to use mathematical functions to calculate distance
-#define pi 3.14159
+#define pi 3.14159265359
 
 
 
@@ -29,6 +29,7 @@ void GPS_ReadData(){
 		char Inputchar;
 		char i=0;
 		char flag=1;
+		uint8_t GPScounter = 0 ;
 
 		do{
 				flag=1;
@@ -43,7 +44,6 @@ void GPS_ReadData(){
 		strcpy(GPS,"");
 		
 		do{
-				uint8_t GPScounter = 0 ;
 				Inputchar = UART5_ReceiveChar();
 				GPS[GPScounter++]=Inputchar;
 				
@@ -62,17 +62,17 @@ char No_tokens=0;
 	
 	}while(token!=NULL);
 	
-	if(strcmp(GPS_Array[2],"A")==0){
+	if(strcmp(GPS_Array[1],"A")==0){
 		
-	if(strcmp(GPS_Array[4],"N")==0)
-		My_Latitude=atof(GPS_Array[3]);
+	if(strcmp(GPS_Array[3],"N")==0)
+		My_Latitude=atof(GPS_Array[2]);
 	else
-		My_Latitude=-atof(GPS_Array[3]);
+		My_Latitude=-atof(GPS_Array[2]);
 	
-	if(strcmp(GPS_Array[6],"E")==0)
-			My_Longitude=atof(GPS_Array[5]);
+	if(strcmp(GPS_Array[5],"E")==0)
+			My_Longitude=atof(GPS_Array[4]);
 	else
-		My_Longitude=-atof(GPS_Array[5]);
+		My_Longitude=-atof(GPS_Array[4]);
 	
 	}
 

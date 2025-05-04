@@ -1,4 +1,8 @@
 *.bak
+*.crf
+*.d
+*.o
+*.User
 project.axf
 ExtDll.iex
 code_m.o
@@ -18,10 +22,6 @@ project_Target 1.dep
 project.uvproj
 project.uvopt
 project.uvgui.Lenovo
-project.uvopt
 prasing.o
 prasing.crf
-prasing.d
-gpio_systick.crf
-gpio_systick.d
-gpio_systick.o
+prasing.crf
