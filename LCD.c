@@ -49,8 +49,13 @@ void send_LCD_Command(unsigned char command)
 
 void write_LCD_String(char *str, unsigned char length)
 {
-    char i;
+	  char i;
+		send_LCD_Command(0x01); 
+		send_LCD_Command(0x80);
     for(i = 0; i < length; i++) {
+				if(i==17){
+						send_LCD_Command(0xC0);
+				}
         write_LCD_Data(str[i]);
     }
 }
