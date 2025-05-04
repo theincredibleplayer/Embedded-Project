@@ -4,11 +4,15 @@ F (.\code_m.c)(0x681616CE)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --
 I (C:\Keil\Labware\inc\tm4c123gh6pm.h)(0x5388525A)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C80BA4)
 I (UART_CONFIG.h)(0x680E87EC)
-F (.\UART_CONFIG.c)(0x681616CE)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\TI\TM4C123-DTM4C123GH6PM-o .\uart_config.o --omf_browse .\uart_config.crf --depend .\uart_config.d)
+F (.\UART_CONFIG.c)(0x68162AFE)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\TI\TM4C123-DTM4C123GH6PM-o .\uart_config.o --omf_browse .\uart_config.crf --depend .\uart_config.d)
 I (UART_CONFIG.h)(0x680E87EC)
 I (C:\Keil\Labware\inc\tm4c123gh6pm.h)(0x5388525A)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C80BA4)
-F (.\audio.c)(0x681629CE)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\TI\TM4C123-DTM4C123GH6PM-o .\audio.o --omf_browse .\audio.crf --depend .\audio.d)
+F (.\audio.c)(0x68172937)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\TI\TM4C123-DTM4C123GH6PM-o .\audio.o --omf_browse .\audio.crf --depend .\audio.d)
+I (audio.h)(0x68172579)
+I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C80BA4)
+I (uart_c.h)(0x68172378)
+F (.\uart_c.c)(0x68172378)(-c --cpu Cortex-M4.fp -D__EVAL -D__MICROLIB -g -O0 --apcs=interwork -I C:\Keil\ARM\RV31\INC-I C:\Keil\ARM\CMSIS\Include-I C:\Keil\ARM\Inc\TI\TM4C123-DTM4C123GH6PM-o .\uart_c.o --omf_browse .\uart_c.crf --depend .\uart_c.d)
 I (C:\Keil\Labware\inc\tm4c123gh6pm.h)(0x5388525A)
-I (audio.h)(0x68162997)
+I (uart_c.h)(0x68172378)
 I (C:\Keil\ARM\ARMCC\include\stdint.h)(0x51C80BA4)

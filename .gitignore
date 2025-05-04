@@ -20,3 +20,7 @@ project.uvopt
 project.uvgui.Lenovo
 audio.crf
 audio.d
+project.uvgui.DELL
+*.d
+*.crf
+*.o
