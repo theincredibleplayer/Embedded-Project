@@ -15,11 +15,14 @@ char GPS[80];
 char GPS_Array[12][15];
 char *token;
 float My_Longitude, My_Latitude;//longitude and latitude from the gps in float form 
-float Loc_Longitude[5], Loc_Latitude[5]; //the lat. & long. of pre-saved locations
-char Location_Names[6][20]; // 5 locations indexed from 0 to 4 and a sixth array called "you are far" when no place is in range
+double Loc_Longitude[5]={31.280205285233116, 31.280447860464538, 31.28018823888521, 31.27840725207929 , 31.278885790685383};
+double Loc_Latitude[5]= {30.064155268417625,30.063653455539505,30.06527454805054,30.06351032021168,30.064092858202084}; //the lat. & long. of pre-saved locations
 char Location_index = 5; //index to choose location ,set initially to 5 which is "you are far"
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
+int nearest_index;
+int min_dis = 1000;
+
 
 //function that takes the gps output and checks GPRMC
 void GPS_ReadData(){
@@ -75,31 +78,52 @@ char No_tokens=0;
 
 }
 // this function is to convert decimal lat. & long. to degrees in case input is already in degrees this func will be neglected
-/*float CoorInDegree(float angle)
+double CoorInDegree(float angle)
 {
 	int degree = (int)angle / 100;
 	float minutes = angle - (float)degree * 100;
 	return(degree + (minutes / 60));
-}*/
+}
 
 
 // calculates the distance and checks which location is near
 void Distance(){
-	char i = 0;
-
+	char i =0;
 	// converting degrees to radians
-	float My_Rad_Longitude = My_Longitude * pi / 180;
-	float My_Rad_Latitude = My_Latitude * pi / 180;
+	double My_Rad_Longitude = CoorInDegree(My_Longitude) * pi / 180;
+	double My_Rad_Latitude = CoorInDegree(My_Latitude) * pi / 180;
 	while(i < 5){
-		float Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
-		float Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
+		double Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
+		double Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
 		// using Harvsine law
-		float a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
-		float c = 2 * atan2(sqrt(a),sqrt(1-a));
+		double a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
+		double c = 2 * atan2(sqrt(a),sqrt(1-a));
 		float distance = R * c;
 		Distance_Arr[i] = distance;
+		if (distance < min_dis) nearest_index = i ;
 		if (distance <= 10) Location_index = i;
 		i++;
+	}
+
+	switch (Location_index)
+	{
+	case  0 :
+		write_LCD_String("    HALL A&B    ",16);
+		break;
+	case  1 :
+		write_LCD_String("    HALL C&D    ",16);
+		break;
+	case  2 :
+		write_LCD_String("     LIBRARY    ",16);
+		break;
+	case  3 :
+		write_LCD_String("CREDIT  BUILDING",16);
+		break;
+	case  4 :
+		write_LCD_String("MECHA   WORKSHOP",16);
+		break;
+	default:
+		break;
 	}
 }
 
@@ -108,6 +132,6 @@ void Distance(){
 /*
 void Location_Identification(char index){
  char My_Location = strcpy(My_Location,Location_Names[Location_index]);
- UART0_SendString(My_Location);
+ UART0_SendString(My_Location);s
 
 } */
