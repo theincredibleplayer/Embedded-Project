@@ -25,3 +25,8 @@ prasing.d
 gpio_systick.crf
 gpio_systick.d
 gpio_systick.o
+*.crf
+*.o
+*.d
+prasing.d
+*.o

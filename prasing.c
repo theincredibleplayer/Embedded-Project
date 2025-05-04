@@ -6,7 +6,7 @@
 #include "stdio.h"
 #include "parsing.h"
 #include "math.h" // to use mathematical functions to calculate distance
-#define pi 3.14159
+#define pi 3.14159265359
 
 
 
@@ -26,6 +26,7 @@ void GPS_ReadData(){
 		char Inputchar;
 		char i=0;
 		char flag=1;
+		uint8_t GPScounter = 0 ;
 
 		do{
 				flag=1;
@@ -40,7 +41,6 @@ void GPS_ReadData(){
 		strcpy(GPS,"");
 		
 		do{
-				uint8_t GPScounter = 0 ;
 				Inputchar = UART5_ReceiveChar();
 				GPS[GPScounter++]=Inputchar;
 				
@@ -59,17 +59,17 @@ char No_tokens=0;
 	
 	}while(token!=NULL);
 	
-	if(strcmp(GPS_Array[2],"A")==0){
+	if(strcmp(GPS_Array[1],"A")==0){
 		
-	if(strcmp(GPS_Array[4],"N")==0)
-		My_Latitude=atof(GPS_Array[3]);
+	if(strcmp(GPS_Array[3],"N")==0)
+		My_Latitude=atof(GPS_Array[2]);
 	else
-		My_Latitude=-atof(GPS_Array[3]);
+		My_Latitude=-atof(GPS_Array[2]);
 	
-	if(strcmp(GPS_Array[6],"E")==0)
-			My_Longitude=atof(GPS_Array[5]);
+	if(strcmp(GPS_Array[5],"E")==0)
+			My_Longitude=atof(GPS_Array[4]);
 	else
-		My_Longitude=-atof(GPS_Array[5]);
+		My_Longitude=-atof(GPS_Array[4]);
 	
 	}
 
@@ -91,14 +91,15 @@ void Distance(){
 	float My_Rad_Longitude = My_Longitude * pi / 180;
 	float My_Rad_Latitude = My_Latitude * pi / 180;
 	while(i < 5){
-	float Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
-	float Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
-	// using Harvsine law
-	float a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
-	float c = 2 * atan2(sqrt(a),sqrt(1-a));
-	float distance = R * c;
-	Distance_Arr[i] = distance;
-	if (distance <= 10) Location_index = i;
+		float Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
+		float Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
+		// using Harvsine law
+		float a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
+		float c = 2 * atan2(sqrt(a),sqrt(1-a));
+		float distance = R * c;
+		Distance_Arr[i] = distance;
+		if (distance <= 10) Location_index = i;
+		i++;
 	}
 }
 
