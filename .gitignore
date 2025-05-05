@@ -1,4 +1,8 @@
 *.bak
+*.crf
+*.d
+*.o
+*.User
 project.axf
 ExtDll.iex
 code_m.o
@@ -18,9 +22,4 @@ project_Target 1.dep
 project.uvproj
 project.uvopt
 project.uvgui.Lenovo
-audio.crf
-audio.d
 project.uvgui.DELL
-*.d
-*.crf
-*.o
