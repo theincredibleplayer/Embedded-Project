@@ -53,7 +53,7 @@ void write_LCD_String(char *str, unsigned char length)
 		send_LCD_Command(0x01); 
 		send_LCD_Command(0x80);
     for(i = 0; i < length; i++) {
-				if(i==17){
+				if(i==16){
 						send_LCD_Command(0xC0);
 				}
         write_LCD_Data(str[i]);

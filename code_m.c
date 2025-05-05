@@ -14,11 +14,6 @@ int main(void)
 		UART0_Init();
 		PORTB_Init();
 		initialize_LCD_Ports();
-		//write_LCD_String("aywa ya sameh ya",16);
-		//send_LCD_Command(0xC0);
-		//write_LCD_String("     noaman     ",16);
-
-		//UART5_ReceiveChar();
 		GPS_ReadData();
 		GPS_list();
 		UART0_SendNewLine();
@@ -31,7 +26,7 @@ int main(void)
 				UART0_SendNumberFloat(Distance_Arr[i],4);
 				UART0_SendNewLine();
 		}
-
+		
 		while(1);
     return 0;
 }
