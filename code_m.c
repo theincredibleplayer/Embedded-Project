@@ -4,7 +4,8 @@
 #include "parsing.h"
 #include "GPIO_Systick.h"
 #include "LCD.h"
-
+#include "audio.h"
+#include "uart_c.h"
 
 
 
@@ -15,6 +16,7 @@ int main(void)
 		UART0_Init();
 		PORTB_Init();
 		initialize_LCD_Ports();
+		UART3_Init();
 		GPS_ReadData();
 		GPS_list();
 		UART0_SendNewLine();
@@ -26,7 +28,9 @@ int main(void)
 		for(i=0;i<5;i++){
 				UART0_SendNumberFloat(Distance_Arr[i],4);
 				UART0_SendNewLine();
+		
 		}
+		
 		
 		while(1);
     return 0;

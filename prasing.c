@@ -113,18 +113,23 @@ void Distance(){
 	{
 	case  0 :
 		write_LCD_String("    HALL A&B    ",16);
+		Audio_PlayTrack(0);
 		break;
 	case  1 :
 		write_LCD_String("  OLD BUILDING  ",16);
+		Audio_PlayTrack(1);
 		break;
 	case  2 :
 		write_LCD_String("     LIBRARY    ",16);
+		Audio_PlayTrack(2);
 		break;
 	case  3 :
 		write_LCD_String("CREDIT  BUILDING",16);
+		Audio_PlayTrack(3);
 		break;
 	case  4 :
 		write_LCD_String("MECHA   WORKSHOP",16);
+		Audio_PlayTrack(4);
 		break;
 	default:
 		break;
