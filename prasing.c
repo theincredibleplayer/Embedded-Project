@@ -126,6 +126,8 @@ void Distance(){
 	case  4 :
 		write_LCD_String("MECHA   WORKSHOP",16);
 		break;
+	case 5 :
+		write_LCD_String("      MARK      ",16);
 	default:
 		break;
 	}
