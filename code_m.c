@@ -7,6 +7,8 @@
 #include "LCD.h"
 #include "audio.h"
 #include "uart_c.h"
+#include "bluetooth_module.h"
+
 
 int main(void)
 {
@@ -16,6 +18,14 @@ int main(void)
 		PORTB_Init();
 		initialize_LCD_Ports();
 		UART3_Init();
+	
+	
+		UART2_Init();
+		Bluetooth();
+	
+
+
+	
 		GPS_ReadData();
 		GPS_list();
 
@@ -30,8 +40,7 @@ int main(void)
 				UART0_SendNewLine();
 		
 		}
-		
-		
+	
 		while(1);
     return 0;
 }
