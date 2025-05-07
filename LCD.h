@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #ifndef LCD
 #define LCD
 
@@ -14,5 +16,7 @@ void write_LCD_String(char *str, unsigned char length); //Writes a string of giv
 void initialize_LCD(void); //Sends standard initialization commands to configure the LCD display.
 
 void initialiaze_LCD_Ports(void);
+
+void set_LCD_CursorLine(uint8_t line);
 
 #endif 

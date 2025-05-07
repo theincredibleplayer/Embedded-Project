@@ -6,6 +6,8 @@
 #include "stdio.h"
 #include "parsing.h"
 #include "math.h" // to use mathematical functions to calculate distance
+#include "LCD.h"
+
 #define pi 3.14159265359
 
 
@@ -24,6 +26,18 @@ int nearest_index;
 char Mark_Rejection[] = "Already  Defined";
 char Mark_Approval[] = "    Mark Set    ";
 char Locations_Lenght = 5;
+int utc;
+//
+     int hh=0,mm=0,ss=0;// hours , minutes ,seconds
+    char hours_str[2]="";
+		char minutes_str[2]="";
+		char seconds_str[2]="";
+
+//
+int total_distance=0;
+char flag=0;
+double old_lat;
+double old_long;
 
 //function that takes the gps output and checks GPRMC
 void GPS_ReadData(){
@@ -53,28 +67,41 @@ void GPS_ReadData(){
 
 // transforms string into elements in an array and we use the data we want 
 void GPS_list(){
-
-char No_tokens=0;
-	token=strtok(GPS,",");
-	do{
-		strcpy(GPS_Array[No_tokens],token);
-		token=strtok(NULL,",");
-		No_tokens++;
+		char time_str[6] ="";
+		char No_tokens=0;
+		token=strtok(GPS,",");
+		do{
+				strcpy(GPS_Array[No_tokens],token);
+				token=strtok(NULL,",");
+				No_tokens++;
+		}while(token!=NULL);
 	
-	}while(token!=NULL);
 	
-	if(strcmp(GPS_Array[1],"A")==0){
+		if(strcmp(GPS_Array[1],"A")==0){
+				strcpy(time_str,GPS_Array[0]);
+				 // Copy substrings
+				strncpy(hours_str, time_str, 2);
+				strncpy(minutes_str, time_str + 2, 2);
+				strncpy(seconds_str, time_str + 4, 2);
+					 hours_str[1] = hours_str[1]+3;
+				// Convert to integers
+				hh = atoi(hours_str)+3;
+				mm = atoi(minutes_str);
+				ss = atoi(seconds_str);
 		
-	if(strcmp(GPS_Array[3],"N")==0)
-		My_Latitude=atof(GPS_Array[2]);
-	else
-		My_Latitude=-atof(GPS_Array[2]);
-	
-	if(strcmp(GPS_Array[5],"E")==0)
-			My_Longitude=atof(GPS_Array[4]);
-	else
-		My_Longitude=-atof(GPS_Array[4]);
-	
+		
+
+		
+		if(strcmp(GPS_Array[3],"N")==0)
+				My_Latitude=atof(GPS_Array[2]);
+		else
+				My_Latitude=-atof(GPS_Array[2]);
+		
+		if(strcmp(GPS_Array[5],"E")==0)
+				My_Longitude=atof(GPS_Array[4]);
+		else
+				My_Longitude=-atof(GPS_Array[4]);
+		
 	}
 
 }
@@ -94,6 +121,10 @@ void Distance(){
 	// converting degrees to radians
 	double My_Rad_Longitude = CoorInDegree(My_Longitude) * pi / 180;
 	double My_Rad_Latitude = CoorInDegree(My_Latitude) * pi / 180;
+  double Loc_Rad_Longitude;
+	double Loc_Rad_Latitude;
+	double a,c;
+	float distance;
 	while(i < Locations_Lenght){
 		double Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
 		double Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
@@ -109,22 +140,64 @@ void Distance(){
 		i++;
 	}
 
+	
+		//total distance
+
+		if(flag==0){
+			old_lat=My_Rad_Latitude;
+			old_long=My_Rad_Longitude;
+			flag=1;
+		}
+		a = pow(sin((My_Rad_Latitude - old_lat)/2),2) + cos(old_lat) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude - old_long)/2),2);
+		c = 2 * atan2(sqrt(a),sqrt(1-a));
+		total_distance += R * c;
+	
+	  old_lat=My_Rad_Latitude;
+	  old_long=My_Rad_Longitude;
+
+	
+		while(i < 5){
+				Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
+				Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
+				// using Harvsine law
+				 a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
+				 c = 2 * atan2(sqrt(a),sqrt(1-a));
+				distance = R * c;
+				Distance_Arr[i] = distance;
+				if (distance < min_dis){
+					nearest_index = i ;
+					min_dis = distance;
+				}
+				if (distance <= 10) Location_index = i;
+				i++;
+		}
+//0 is hall a and b
+//1 is the same
+//2 is old building
+//3 is credit building
+//4 is library
+//5 is mecha workshop
 	switch (nearest_index)
 	{
 	case  0 :
 		write_LCD_String("    HALL A&B    ",16);
+		Audio_PlayTrack(1);
 		break;
 	case  1 :
 		write_LCD_String("  OLD BUILDING  ",16);
+		Audio_PlayTrack(2);
 		break;
 	case  2 :
 		write_LCD_String("     LIBRARY    ",16);
+		Audio_PlayTrack(4);
 		break;
 	case  3 :
 		write_LCD_String("CREDIT  BUILDING",16);
+		Audio_PlayTrack(3);
 		break;
 	case  4 :
 		write_LCD_String("MECHA   WORKSHOP",16);
+		Audio_PlayTrack(5);
 		break;
 	case 5 :
 		write_LCD_String("      MARK      ",16);
