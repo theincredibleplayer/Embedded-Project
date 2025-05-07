@@ -6,6 +6,7 @@
 #include "stdio.h"
 #include "parsing.h"
 #include "math.h" // to use mathematical functions to calculate distance
+
 #define pi 3.14159265359
 
 
@@ -21,7 +22,12 @@ char Location_index = 5; //index to choose location ,set initially to 5 which is
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
 int nearest_index;
-
+int utc;
+//
+     int hh=0,mm=0,ss=0;// hours , minutes ,seconds
+    char hours_str[2]="";
+		char minutes_str[2]="";
+		char seconds_str[2]="";
 
 
 //function that takes the gps output and checks GPRMC
@@ -62,7 +68,25 @@ char No_tokens=0;
 	
 	}while(token!=NULL);
 	
+	
 	if(strcmp(GPS_Array[1],"A")==0){
+   char time_str[6] ="";
+		
+		strcpy(time_str,GPS_Array[0]);
+
+   
+		 // Copy substrings
+    strncpy(hours_str, time_str, 2);
+    strncpy(minutes_str, time_str + 2, 2);
+    strncpy(seconds_str, time_str + 4, 2);
+    // Convert to integers
+     hh = atoi(hours_str)+3;
+     mm = atoi(minutes_str);
+     ss = atoi(seconds_str);
+  
+		
+
+		
 		
 	if(strcmp(GPS_Array[3],"N")==0)
 		My_Latitude=atof(GPS_Array[2]);
