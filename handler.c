@@ -4,9 +4,10 @@
 #include "parsing.h"
 #include "GPIO_Systick.h"
 #include "LCD.h"
+#include "bluetooth_module.h"
 
 void UART2_Handler(void){
-
+		Bluetooth();
 }
 
 
