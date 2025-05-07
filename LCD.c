@@ -14,7 +14,7 @@ void initialize_LCD_Ports(void)
 
     delay_ms(10000);
     initialize_LCD();
-    send_LCD_Command(0x80);       // Move cursor to first row, first column
+    set_LCD_CursorLine(1);        // Select first line
 }
 
 void write_LCD_Data(unsigned char data)
@@ -70,7 +70,7 @@ void initialize_LCD(void)
 
 void send_To_Data_Port(unsigned char data)
 {
-    data &= 0x0F;  // Use only lower 4 bits
+    data &= 0x0F;             // Use only lower 4 bits
     GPIO_PORTB_DATA_R &= ~0x0F;  // Clear PB0-PB3
     GPIO_PORTB_DATA_R |= data;   // Set PB0-PB3 with the nibble
 }
@@ -78,4 +78,13 @@ void send_To_Data_Port(unsigned char data)
 void delay_ms(long milliseconds)
 {
     while(milliseconds--);
+}
+
+// NEW FUNCTION TO SELECT LCD LINE
+void set_LCD_CursorLine(uint8_t line)
+{
+    if (line == 1)
+        send_LCD_Command(0x80);  // First line address
+    else if (line == 2)
+        send_LCD_Command(0xC0);  // Second line address
 }
