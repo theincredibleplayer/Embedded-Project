@@ -21,7 +21,8 @@ char Location_index = 5; //index to choose location ,set initially to 5 which is
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
 int nearest_index;
-
+float velocity_knot, velocity_km
+char velocity_array
 
 
 //function that takes the gps output and checks GPRMC
@@ -73,6 +74,12 @@ char No_tokens=0;
 			My_Longitude=atof(GPS_Array[4]);
 	else
 		My_Longitude=-atof(GPS_Array[4]);
+	
+	velocity_knot = atof(GPS_Array[6]);
+	
+	velocity_km = velocity_knot* 1.852 ;
+	//insert a function that converts float to string to be printed on lcd
+	
 	
 	}
 
