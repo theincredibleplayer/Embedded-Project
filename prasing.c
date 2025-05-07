@@ -27,6 +27,7 @@ char Mark_Rejection[] = "Already  Defined";
 char Mark_Approval[] = "    Mark Set    ";
 char Locations_Lenght = 5;
 int utc;
+char Location_index;
 //
      int hh=0,mm=0,ss=0;// hours , minutes ,seconds
     char hours_str[2]="";
@@ -210,7 +211,7 @@ char* Mark_Location(void){
 	char j;
 	char Margin_flag = 1;
 	float margin_dis = 0;
-	for(j =0; j < strlen(Distance_Arr);j++)
+	for(j =0; j < 5;j++)
 	{
 		if(Distance_Arr[j] < 25)
 		{

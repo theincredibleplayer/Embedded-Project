@@ -3,23 +3,20 @@
 #include <stdlib.h>
 #include "TM4C123.h"
 #include "bluetooth_module.h"
+#include "parsing.h"
 
 void Bluetooth(){
 		/* Set PF1, PF2 and PF3 as digital output pins */
+			char c = Bluetooth_Read();          // get a character from UART5 
+
+
+  	//Delay(10); 
 	
-		SYSCTL->RCGCGPIO |= 0x20;   /* enable clock to GPIOF */
-    GPIOF->DIR |= 0x0E;         //set PF1, PF2 and PF3 as digital output pin
-    GPIOF->DEN |= 0x0E;         // CON PF1, PF2 and PF3 as digital GPIO pins
-  	Delay(10); 
-	
-	while(1)
-	{
-		char c = Bluetooth_Read();          // get a character from UART5 
 		
 		// Check the received character and take action to control onboard LEDs of TM4C123
 		// Send status string to Andriod app after turning on/off LEDs 
 
-        if( c=='A'){
+    if( c=='A'){
 			GPIOF->DATA |=(1<<1);
 			Bluetooth_Write_String("RED LED ON\n");
 		}
@@ -43,7 +40,12 @@ void Bluetooth(){
 			GPIOF->DATA &=~(1<<3);
 			Bluetooth_Write_String("GREEN LED OFF\n");
 		}
-	}
+		if( c=='M'){
+			Bluetooth_Write_String( Mark_Location());
+		}
+		else if( c=='U'){
+			Mark_Removal();
+		}
 }
 
 void UART2_Init(void){
@@ -68,6 +70,12 @@ void UART2_Init(void){
     NVIC_PRI12_R = (NVIC_PRI1_R & ~0xFFFF00FF) | (2 << 13); // Priority 2 (bits 31-29)
     NVIC_EN1_R |= (1 << (49 - 32));      // Enable interrupt 33 (UART2) in NVIC
 	
+	
+	
+	//leds
+			SYSCTL->RCGCGPIO |= 0x20;   /* enable clock to GPIOF */
+    GPIOF->DIR |= 0x0E;         //set PF1, PF2 and PF3 as digital output pin
+    GPIOF->DEN |= 0x0E;         // CON PF1, PF2 and PF3 as digital GPIO pins
 	
 }
 
