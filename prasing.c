@@ -85,15 +85,14 @@ char No_tokens=0;
     strncpy(hours_str, time_str, 2);
     strncpy(minutes_str, time_str + 2, 2);
     strncpy(seconds_str, time_str + 4, 2);
+		   hours_str[1] = hours_str[1]+3;
     // Convert to integers
-     hh = atoi(hours_str)+3;
-     mm = atoi(minutes_str);
-     ss = atoi(seconds_str);
-     hours_str=itoa(hh);
+    hh = atoi(hours_str)+3;
+    mm = atoi(minutes_str);
+    ss = atoi(seconds_str);
+  
 		
-		minutes_str=itoa(mm);
-   seconds_str=itoa(ss);
-		
+
 		
 	if(strcmp(GPS_Array[3],"N")==0)
 		My_Latitude=atof(GPS_Array[2]);
@@ -128,16 +127,16 @@ void Distance(){
 		//total distance
 
 	if(flag==0){
-	old_lat=My_Rad_Latitude;
-	old_long=My_Rad_Longitude;
-	flag=1;
+	  old_lat=My_Rad_Latitude;
+	  old_long=My_Rad_Longitude;
+	  flag=1;
 	}
 	 double a = pow(sin((My_Rad_Latitude - old_lat)/2),2) + cos(old_lat) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude - old_long)/2),2);
 		double c = 2 * atan2(sqrt(a),sqrt(1-a));
 		total_distance += R * c;
 	
-	old_lat=My_Rad_Latitude;
-	old_long=My_Rad_Longitude;
+	  old_lat=My_Rad_Latitude;
+	  old_long=My_Rad_Longitude;
 
 	
 	while(i < 5){

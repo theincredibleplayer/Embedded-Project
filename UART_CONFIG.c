@@ -101,7 +101,7 @@ void UART0_SendNewLine(){
 		UART0_SendChar('\n');
 }
 
-
+//***************************************************
 void UART5_Init(void) {
 		SYSCTL_RCGCUART_R |= 0x20;
 		SYSCTL_RCGCGPIO_R |= 0x10;
@@ -115,6 +115,14 @@ void UART5_Init(void) {
 		UART5_FBRD_R = 11;      // Fractional part
 		UART5_LCRH_R = 0x60;
 		UART5_CTL_R |= (UART_CTL_TXE | UART_CTL_RXE | UART_CTL_UARTEN);
+	
+		UART5_IM-R |= UART_IM_RXIM;
+	  UART5_ICR_R=0X7FF;
+		
+		NVIC_PRI15_R = (NVIC_PRI15_R & ~0xE0000000) | (1 << 29);  // Priority level 1
+		NVIC_EN1_R |= (1 << (61 - 32));      
+		EnableInterrupts();
+	
 }
 
 
