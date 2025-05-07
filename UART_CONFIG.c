@@ -4,7 +4,7 @@
 #include "GPIO_Systick.h"
 #include <math.h>  
 
-
+//carpe diem
 
 void UART0_Init(void) {
     SYSCTL_RCGCUART_R |= 0x01;          // Enable UART0 clock
