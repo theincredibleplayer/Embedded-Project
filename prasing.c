@@ -21,8 +21,9 @@ char margin_index = 5; //index to tell whether i am near to any of the locations
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
 int nearest_index;
-
-
+char Mark_Rejection[] = "Already  Defined";
+char Mark_Approval[] = "    Mark Set    ";
+char Locations_Lenght = 5;
 
 //function that takes the gps output and checks GPRMC
 void GPS_ReadData(){
@@ -93,7 +94,7 @@ void Distance(){
 	// converting degrees to radians
 	double My_Rad_Longitude = CoorInDegree(My_Longitude) * pi / 180;
 	double My_Rad_Latitude = CoorInDegree(My_Latitude) * pi / 180;
-	while(i < 5){
+	while(i < Locations_Lenght){
 		double Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
 		double Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
 		// using Harvsine law
@@ -130,7 +131,7 @@ void Distance(){
 	}
 }
 
-void Mark_Location(void){
+char* Mark_Location(void){
 	char j;
 	char Margin_flag = 1;
 	float margin_dis = 0;
@@ -145,7 +146,15 @@ void Mark_Location(void){
 	if (Margin_flag){
 	Loc_Longitude[5] = CoorInDegree(My_Longitude); // marked location Longitude
 	Loc_Latitude[5] = CoorInDegree(My_Latitude); // marked location latitude
+	Locations_Lenght = 6;
+	return Mark_Approval;
 	}
-	
+	else 
+	return Mark_Rejection;
+}
 
+void Mark_Removal(void){
+	Loc_Latitude[5] = 0;
+	Loc_Longitude[5] = 0;
+	Locations_Lenght = 5;
 }
