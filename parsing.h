@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #ifndef parsing
 #define parsing
 
@@ -30,6 +32,9 @@ void GPS_ReadData();
 void GPS_list();
 void Distance();
 void Location_Identification(char index);
+
+void SendIntToLCD(int num);
+void SendFloatToLCD(float num,uint8_t precision);
 
 
 

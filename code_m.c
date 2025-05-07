@@ -15,11 +15,10 @@ int main(void)
 		uint8_t i = 0;
 		UART5_Init();
 		UART0_Init();
-		PORTB_Init();
+		//PORTB_Init();
 		initialize_LCD_Ports();
 		UART3_Init();
-		
-		
+		UART2_Init();
 		while(1);
     return 0;
 }
