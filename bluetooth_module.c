@@ -62,6 +62,13 @@ void UART2_Init(void){
     UART2_FBRD_R = 11;
     UART2_LCRH_R = 0x60;             // 8-bit, not parity bit, no FIFO
     UART2_CTL_R = 0x301;             // Enable UART2
+	//interrupt******************************************************************
+	  UART2_ICR_R = 0x7FF;                 // Clear all UART2 interrupt flags
+    UART2_IM_R |= UART_IM_RXIM;          // Enable RX interrupt
+    NVIC_PRI12_R = (NVIC_PRI1_R & ~0xFFFF00FF) | (2 << 13); // Priority 2 (bits 31-29)
+    NVIC_EN1_R |= (1 << (49 - 32));      // Enable interrupt 33 (UART2) in NVIC
+	
+	
 }
 
 char Bluetooth_Read(void)  
