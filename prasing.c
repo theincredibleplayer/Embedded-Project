@@ -108,20 +108,25 @@ void Distance(){
 		if (distance <= 10) Location_index = i;
 		i++;
 	}
-
+//0 is hall a and b
+//1 is the same
+//2 is old building
+//3 is credit building
+//4 is library
+//5 is mecha workshop
 	switch (nearest_index)
 	{
 	case  0 :
 		write_LCD_String("    HALL A&B    ",16);
-		Audio_PlayTrack(0);
+		Audio_PlayTrack(1);
 		break;
 	case  1 :
 		write_LCD_String("  OLD BUILDING  ",16);
-		Audio_PlayTrack(1);
+		Audio_PlayTrack(2);
 		break;
 	case  2 :
 		write_LCD_String("     LIBRARY    ",16);
-		Audio_PlayTrack(2);
+		Audio_PlayTrack(4);
 		break;
 	case  3 :
 		write_LCD_String("CREDIT  BUILDING",16);
@@ -129,7 +134,7 @@ void Distance(){
 		break;
 	case  4 :
 		write_LCD_String("MECHA   WORKSHOP",16);
-		Audio_PlayTrack(4);
+		Audio_PlayTrack(5);
 		break;
 	default:
 		break;

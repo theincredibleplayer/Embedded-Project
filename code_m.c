@@ -7,8 +7,6 @@
 #include "audio.h"
 #include "uart_c.h"
 
-
-
 int main(void)
 {
 		uint8_t i = 0;
@@ -19,6 +17,7 @@ int main(void)
 		UART3_Init();
 		GPS_ReadData();
 		GPS_list();
+
 		UART0_SendNewLine();
 		UART0_SendNumberFloat(My_Longitude,5);
 		UART0_SendNewLine();
