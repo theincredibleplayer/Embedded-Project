@@ -7,6 +7,8 @@
 #include "LCD.h"
 #include "audio.h"
 #include "uart_c.h"
+#include "bluetooth_module.h"
+
 
 int main(void)
 {
