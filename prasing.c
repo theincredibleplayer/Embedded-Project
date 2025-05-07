@@ -89,9 +89,10 @@ char No_tokens=0;
      hh = atoi(hours_str)+3;
      mm = atoi(minutes_str);
      ss = atoi(seconds_str);
-  
+     hours_str=itoa(hh);
 		
-
+		minutes_str=itoa(mm);
+   seconds_str=itoa(ss);
 		
 		
 	if(strcmp(GPS_Array[3],"N")==0)
