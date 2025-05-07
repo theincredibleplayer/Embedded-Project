@@ -1,3 +1,5 @@
+#include <stdint.h>
+
 #ifndef parsing
 #define parsing
 
@@ -32,6 +34,9 @@ void Distance();
 void Location_Identification(char index);
 char* Mark_Location(void);
 void Mark_Removal(void);
+
+void SendIntToLCD(int num);
+void SendFloatToLCD(float num,uint8_t precision);
 
 
 

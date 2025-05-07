@@ -206,7 +206,77 @@ void Distance(){
 		break;
 	}
 }
+void SendFloatToLCD(float num,uint8_t precision){
+    char buffer[10]="";
+    int8_t i = 0;
+		uint8_t k = 0;
+		int32_t int_part = (int)num;
+		int32_t decimal_part = 0;
+    if(num == 0.0) {
+        UART0_SendChar('0');
+        return;
+    }
+    if(num < 0.0) {                       // Handle negative numbers
+        UART0_SendChar('-');
+        num = -num;
+    }
+		int_part = (int)num;																		//split the number into an int part and a decimal part
+		decimal_part = (num*pow(10, precision)) - (int_part*pow(10, precision));			//
+		
+		for(k=0;k<precision;k++){                    // convert decimal part to string (order is reversed), made using a for loop for padding
+				buffer[i++] = (decimal_part % 10) + '0';
+				decimal_part /= 10;
+		}
+		
+		buffer[i++] = '.'; //decimal point
+		
+	  if(int_part == 0) {
+				buffer[i++] = '0';
+    }else{
+				while(int_part > 0) {                  // convert int part to string (order is reversed)
+						buffer[i++] = (int_part % 10) + '0';
+						int_part /= 10;
+				}
+		}	
+		send_LCD_Command(0x01);
+    send_LCD_Command(0x80);
+		i--;
+		for(; i >= 0; i--) {
+        write_LCD_Data(buffer[i]);
+    }
+}
+void SendIntToLCD(int num) {
+    char buffer[10];
+    int i = 0;
 
+    if(num == 0) {
+        UART0_SendChar('0');
+        return;
+    }
+    if(num < 0) {                       // Handle negative numbers
+        UART0_SendChar('-');
+        num = -num;
+    }
+
+    while(num > 0) {                    // Convert number to string (reverse order)
+        buffer[i++] = (num % 10) + '0';
+        num /= 10;
+    }
+
+		send_LCD_Command(0x01);
+    send_LCD_Command(0x80);
+		i--;
+		for(; i >= 0; i--) {
+        write_LCD_Data(buffer[i]);
+    }
+}
+// sends the location to the LCD
+/*
+void Location_Identification(char index){
+ char My_Location = strcpy(My_Location,Location_Names[Location_index]);
+ UART0_SendString(My_Location);s
+
+} */
 char* Mark_Location(void){
 	char j;
 	char Margin_flag = 1;
