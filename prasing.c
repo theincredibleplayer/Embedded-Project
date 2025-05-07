@@ -6,6 +6,7 @@
 #include "stdio.h"
 #include "parsing.h"
 #include "math.h" // to use mathematical functions to calculate distance
+#include "LCD.h"
 
 #define pi 3.14159265359
 
@@ -29,6 +30,11 @@ int utc;
 		char minutes_str[2]="";
 		char seconds_str[2]="";
 
+//
+int total_distance=0;
+char flag=0;
+double old_lat;
+double old_long;
 
 //function that takes the gps output and checks GPRMC
 void GPS_ReadData(){
@@ -117,12 +123,28 @@ void Distance(){
 	// converting degrees to radians
 	double My_Rad_Longitude = CoorInDegree(My_Longitude) * pi / 180;
 	double My_Rad_Latitude = CoorInDegree(My_Latitude) * pi / 180;
+	
+		//total distance
+
+	if(flag==0){
+	old_lat=My_Rad_Latitude;
+	old_long=My_Rad_Longitude;
+	flag=1;
+	}
+	 double a = pow(sin((My_Rad_Latitude - old_lat)/2),2) + cos(old_lat) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude - old_long)/2),2);
+		double c = 2 * atan2(sqrt(a),sqrt(1-a));
+		total_distance += R * c;
+	
+	old_lat=My_Rad_Latitude;
+	old_long=My_Rad_Longitude;
+
+	
 	while(i < 5){
 		double Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
 		double Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
 		// using Harvsine law
-		double a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
-		double c = 2 * atan2(sqrt(a),sqrt(1-a));
+		 a = pow(sin((My_Rad_Latitude-Loc_Rad_Latitude)/2),2) + cos(Loc_Rad_Latitude) * cos(My_Rad_Latitude)*pow(sin((My_Rad_Longitude-Loc_Rad_Longitude)/2),2);
+		 c = 2 * atan2(sqrt(a),sqrt(1-a));
 		float distance = R * c;
 		Distance_Arr[i] = distance;
 		if (distance < min_dis){
