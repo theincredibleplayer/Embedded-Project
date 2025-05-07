@@ -107,7 +107,6 @@ void delay_ms(long milliseconds)
     while(milliseconds--);
 }
 
-// NEW FUNCTION TO SELECT LCD LINE
 void set_LCD_CursorLine(uint8_t line)
 {
     if (line == 1)
