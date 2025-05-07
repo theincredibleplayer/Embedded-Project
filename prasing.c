@@ -15,14 +15,15 @@ char GPS[80];
 char GPS_Array[12][15];
 char *token;
 float My_Longitude, My_Latitude;//longitude and latitude from the gps in float form 
-double Loc_Longitude[5]={31.280205285233116, 31.278886300580226, 31.28018823888521, 31.27840725207929 , 31.278885790685383};
-double Loc_Latitude[5]= {30.064155268417625,30.064881099300123,30.06527454805054,30.06351032021168,30.064092858202084}; //the lat. & long. of pre-saved locations
-char Location_index = 5; //index to choose location ,set initially to 5 which is "you are far"
+double Loc_Longitude[6]={31.280205285233116, 31.278886300580226, 31.28018823888521, 31.27840725207929 , 31.278885790685383};
+double Loc_Latitude[6]= {30.064155268417625,30.064881099300123,30.06527454805054,30.06351032021168,30.064092858202084}; //the lat. & long. of pre-saved locations
+char margin_index = 5; //index to tell whether i am near to any of the locations by less than 25 
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
 int nearest_index;
-
-
+char Mark_Rejection[] = "Already  Defined";
+char Mark_Approval[] = "    Mark Set    ";
+char Locations_Lenght = 5;
 
 //function that takes the gps output and checks GPRMC
 void GPS_ReadData(){
@@ -93,7 +94,7 @@ void Distance(){
 	// converting degrees to radians
 	double My_Rad_Longitude = CoorInDegree(My_Longitude) * pi / 180;
 	double My_Rad_Latitude = CoorInDegree(My_Latitude) * pi / 180;
-	while(i < 5){
+	while(i < Locations_Lenght){
 		double Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
 		double Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
 		// using Harvsine law
@@ -105,7 +106,6 @@ void Distance(){
 			nearest_index = i ;
 			min_dis = distance;
 		}
-		if (distance <= 10) Location_index = i;
 		i++;
 	}
 
@@ -131,16 +131,37 @@ void Distance(){
 		write_LCD_String("MECHA   WORKSHOP",16);
 		Audio_PlayTrack(4);
 		break;
+	case 5 :
+		write_LCD_String("      MARK      ",16);
 	default:
 		break;
 	}
 }
 
+char* Mark_Location(void){
+	char j;
+	char Margin_flag = 1;
+	float margin_dis = 0;
+	for(j =0; j < strlen(Distance_Arr);j++)
+	{
+		if(Distance_Arr[j] < 25)
+		{
+			Margin_flag = 0;
+			break;
+		}
+	}
+	if (Margin_flag){
+	Loc_Longitude[5] = CoorInDegree(My_Longitude); // marked location Longitude
+	Loc_Latitude[5] = CoorInDegree(My_Latitude); // marked location latitude
+	Locations_Lenght = 6;
+	return Mark_Approval;
+	}
+	else 
+	return Mark_Rejection;
+}
 
-// sends the location to the LCD
-/*
-void Location_Identification(char index){
- char My_Location = strcpy(My_Location,Location_Names[Location_index]);
- UART0_SendString(My_Location);s
-
-} */
+void Mark_Removal(void){
+	Loc_Latitude[5] = 0;
+	Loc_Longitude[5] = 0;
+	Locations_Lenght = 5;
+}
