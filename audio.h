@@ -1,8 +1,12 @@
+#include <stdint.h>
+#include <stdbool.h>
 #ifndef AUDIO_H
 #define AUDIO_H
 
-#include <stdint.h>
+extern bool mute_flag;
 
 void Audio_PlayTrack(uint8_t trackNum);
+void mute(void);
+void unmute(void);
 
 #endif
