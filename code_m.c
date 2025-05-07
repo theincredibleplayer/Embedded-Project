@@ -7,7 +7,7 @@
 #include "LCD.h"
 #include "audio.h"
 #include "uart_c.h"
-
+#include "bluetooth_module.h"
 
 
 int main(void)
@@ -18,19 +18,6 @@ int main(void)
 		PORTB_Init();
 		initialize_LCD_Ports();
 		UART3_Init();
-		GPS_ReadData();
-		GPS_list();
-		UART0_SendNewLine();
-		UART0_SendNumberFloat(My_Longitude,5);
-		UART0_SendNewLine();
-		UART0_SendNumberFloat(My_Latitude,5);
-		UART0_SendNewLine();
-		Distance();
-		for(i=0;i<5;i++){
-				UART0_SendNumberFloat(Distance_Arr[i],4);
-				UART0_SendNewLine();
-		
-		}
 		
 		
 		while(1);
