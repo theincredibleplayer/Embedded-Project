@@ -6,6 +6,8 @@
 #include "stdio.h"
 #include "parsing.h"
 #include "math.h" // to use mathematical functions to calculate distance
+#include "LCD.h"
+
 #define pi 3.14159265359
 
 
@@ -21,8 +23,22 @@ char margin_index = 5; //index to tell whether i am near to any of the locations
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
 int nearest_index;
+char Mark_Rejection[] = "Already  Defined";
+char Mark_Approval[] = "    Mark Set    ";
+char Locations_Lenght = 5;
+int utc;
+char Location_index;
+//
+     int hh=0,mm=0,ss=0;// hours , minutes ,seconds
+    char hours_str[2]="";
+		char minutes_str[2]="";
+		char seconds_str[2]="";
 
-
+//
+int total_distance=0;
+char flag=0;
+double old_lat;
+double old_long;
 
 //function that takes the gps output and checks GPRMC
 void GPS_ReadData(){

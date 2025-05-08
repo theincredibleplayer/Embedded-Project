@@ -4,6 +4,7 @@
 #include "GPIO_Systick.h"
 #include <math.h>  
 
+#include <TM4C123.h>
 
 void UART0_Init(void) {
     SYSCTL_RCGCUART_R |= 0x01;          // Enable UART0 clock
