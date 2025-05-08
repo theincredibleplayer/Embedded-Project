@@ -14,19 +14,6 @@ extern char Location_index;
 extern float R;
 extern float Distance_Arr[5];
 
-//----------------------------------------------------
-extern int hh,mm,ss;// hours , minutes ,seconds
-extern char hours_str[2];
-extern char minutes_str[2];
-extern char seconds_str[2];
-
-//--------------------------------------------------------
-extern int total_distance;
-extern char flag;
-extern double old_lat;
-extern double old_long;
-
-//-----------------------------------------------------
 
 void GPS_ReadData();
 void GPS_list();
