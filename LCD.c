@@ -60,6 +60,15 @@ void write_LCD_String(char *str, unsigned char length)
     }
 }
 
+void write_LCD_Line2_NoClear(char *str, unsigned char length)
+{
+    char i;
+    send_LCD_Command(0xC0);
+    for(i = 0; i < length; i++) {
+        write_LCD_Data(str[i]);
+    }
+}
+
 void initialize_LCD(void)
 {
     // === Required wake-up sequence (8-bit to 4-bit mode) ===

@@ -13,6 +13,8 @@ void send_LCD_Command(unsigned char command);  //Sends a command to the LCD (cle
 
 void write_LCD_String(char *str, unsigned char length); //Writes a string of given length to the LCD.
 
+void write_LCD_Line2_NoClear(char *str, unsigned char length); //Writes a string of given length to the second line of the LCD without clearing.
+
 void initialize_LCD(void); //Sends standard initialization commands to configure the LCD display.
 
 void initialiaze_LCD_Ports(void);

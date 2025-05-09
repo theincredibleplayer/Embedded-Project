@@ -281,7 +281,7 @@ char* Mark_Location(void){
 	char j;
 	char Margin_flag = 1;
 	float margin_dis = 0;
-	for(j =0; j < 5;j++)
+	for(j =0; j < 	Locations_Lenght;j++)
 	{
 		if(Distance_Arr[j] < 25)
 		{

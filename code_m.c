@@ -27,7 +27,7 @@ int main(void)
 			Distance();
 			Bluetooth();
 		}
-	while(1);
+	//while(1);
     return 0;
 }
 
