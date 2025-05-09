@@ -5,10 +5,11 @@
 #include "bluetooth_module.h"
 #include "parsing.h"
 #include "audio.h"
+#include "LCD.h"
 
 void Bluetooth(){
 		
-		char c;
+		char c = 0;
 		if (!(UART7->FR & (1 << 4))) {  // If the RX FIFO is not empty, data is available
         c = Bluetooth_Read();
 		}
@@ -26,13 +27,14 @@ void Bluetooth(){
 		// Send status string to Andriod app after turning on/off LEDs 
 
 	          // get a character from UART7
-        if( c=='A'){
-			Bluetooth_Write_String("RED LED ON\n");
-			GPIOF->DATA |=(1<<1);
+		if( c=='A'){
+			write_LCD_Line2_NoClear(Mark_Location(), 16);
+			Bluetooth_Write_String("Location marked\n");
 		}
 		else if( c=='B'){
-			GPIOF->DATA &=~(1<<1);
-			Bluetooth_Write_String("RED LED OFF\n");
+			Mark_Removal();
+			write_LCD_Line2_NoClear("  Mark removed  ", 16);
+			Bluetooth_Write_String("Location unmarked\n");
 		}
 		else if( c=='C'){
 			GPIOF->DATA |=(1<<2);
