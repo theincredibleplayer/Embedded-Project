@@ -19,6 +19,7 @@ extern int hh,mm,ss;// hours , minutes ,seconds
 extern char hours_str[2];
 extern char minutes_str[2];
 extern char seconds_str[2];
+extern char time_str[8];
 
 //--------------------------------------------------------
 extern int total_distance;
@@ -27,7 +28,8 @@ extern double old_lat;
 extern double old_long;
 
 //-----------------------------------------------------
-
+extern char time_flag;
+extern char distance_flag;
 void GPS_ReadData();
 void GPS_list();
 void Distance();
@@ -36,7 +38,7 @@ char* Mark_Location(void);
 void Mark_Removal(void);
 
 void SendIntToLCD(int num);
-void SendFloatToLCD(float num,uint8_t precision);
+void SendDistanceToLCD(float num,uint8_t precision);
 
 
 

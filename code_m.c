@@ -25,7 +25,14 @@ int main(void)
 			GPS_ReadData();
 			GPS_list();
 			Distance();
+			if(time_flag){
+					write_LCD_Line2_NoClear(time_str,8);
+			}
+			if(distance_flag){
+					SendDistanceToLCD(total_distance,4);
+			}
 			Bluetooth();
+			
 		}
 	//while(1);
     return 0;
