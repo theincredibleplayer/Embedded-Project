@@ -4,6 +4,7 @@
 #include "TM4C123.h"
 #include "bluetooth_module.h"
 #include "parsing.h"
+#include "audio.h"
 
 void Bluetooth(){
 		
@@ -48,6 +49,14 @@ void Bluetooth(){
 		else if( c=='F'){
 			GPIOF->DATA &=~(1<<3);
 			Bluetooth_Write_String("GREEN LED OFF\n");
+		}
+		if( c=='G'){
+			mute();
+			Bluetooth_Write_String("Muted\n");
+		}
+		else if( c=='H'){
+			unmute();
+			Bluetooth_Write_String("Unmuted\n");
 		}
 	
 }

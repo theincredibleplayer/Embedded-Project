@@ -20,14 +20,14 @@ int main(void)
 		initialize_LCD_Ports();
 		UART3_Init();
 		UART7_Init();
-		//Bluetooth();
-	
+		
 		while(1){
 			GPS_ReadData();
 			GPS_list();
 			Distance();
 			Bluetooth();
 		}
+	while(1);
     return 0;
 }
 
