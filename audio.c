@@ -1,9 +1,23 @@
 #include "audio.h"
 #include "uart_c.h"
 
+bool mute_flag = false;
+
+
+void mute(void) {
+    mute_flag = true;
+}
+
+void unmute(void) {
+    mute_flag = false;
+}
+
+
 void Audio_PlayTrack(uint8_t trackNum) {
     int i;
     uint8_t command[8];
+		if (mute_flag) return;
+
 
     command[0] = 0x7E;
     command[1] = 0xFF;

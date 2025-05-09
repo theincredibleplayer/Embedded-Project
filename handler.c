@@ -6,7 +6,7 @@
 #include "LCD.h"
 #include "bluetooth_module.h"
 
-void UART2_Handler(void){
+void UART7_Handler(void){
 		Bluetooth();
 }
 

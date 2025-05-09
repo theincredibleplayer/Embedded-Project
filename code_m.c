@@ -8,6 +8,7 @@
 #include "audio.h"
 #include "uart_c.h"
 #include "bluetooth_module.h"
+#include "TM4C123.h"
 
 
 int main(void)
@@ -15,11 +16,18 @@ int main(void)
 		uint8_t i = 0;
 		UART5_Init();
 		UART0_Init();
-		//PORTB_Init();
+		PORTB_Init();
 		initialize_LCD_Ports();
 		UART3_Init();
-		UART2_Init();
-		while(1);
+		UART7_Init();
+		
+		while(1){
+			GPS_ReadData();
+			GPS_list();
+			Distance();
+			Bluetooth();
+		}
+	while(1);
     return 0;
 }
 
