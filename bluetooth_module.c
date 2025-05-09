@@ -28,37 +28,35 @@ void Bluetooth(){
 
 	          // get a character from UART7
 		if( c=='A'){
-			write_LCD_Line2_NoClear(Mark_Location(), 16);
-			Bluetooth_Write_String("Location marked\n");
+				write_LCD_Line2_NoClear(Mark_Location(), 16);
+				Bluetooth_Write_String("Location marked\n");
 		}
 		else if( c=='B'){
-			Mark_Removal();
-			write_LCD_Line2_NoClear("  Mark removed  ", 16);
-			Bluetooth_Write_String("Location unmarked\n");
+				Mark_Removal();
+				write_LCD_Line2_NoClear("  Mark removed  ", 16);
+				Bluetooth_Write_String("Location unmarked\n");
 		}
-		else if( c=='C'){
-			GPIOF->DATA |=(1<<2);
-			Bluetooth_Write_String("BLUE LED ON\n");
+		if( c=='C'){
+				GPIOF->DATA |=(1<<2);
+				Bluetooth_Write_String("BLUE LED ON\n");
 		}
 		else if( c=='D'){
-			GPIOF->DATA &=~(1<<2);
-			Bluetooth_Write_String("BLUE LED OFF\n");
+				GPIOF->DATA &=~(1<<2);
+				Bluetooth_Write_String("BLUE LED OFF\n");
 		}
 		if( c=='E'){
-			GPIOF->DATA |=(1<<3);
-			Bluetooth_Write_String("GREEN LED ON\n");
+				set_time_on();
 		}
-		else if( c=='F'){
-			GPIOF->DATA &=~(1<<3);
-			Bluetooth_Write_String("GREEN LED OFF\n");
+		if( c=='F'){
+				set_distance_on();
 		}
 		if( c=='G'){
-			mute();
-			Bluetooth_Write_String("Muted\n");
+				mute();
+				Bluetooth_Write_String("Muted\n");
 		}
 		else if( c=='H'){
-			unmute();
-			Bluetooth_Write_String("Unmuted\n");
+				unmute();
+				Bluetooth_Write_String("Unmuted\n");
 		}
 	
 }

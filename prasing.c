@@ -33,10 +33,15 @@ char Location_index;
     char hours_str[2]="";
 		char minutes_str[2]="";
 		char seconds_str[2]="";
+		char time_str[8]="";
+
 
 //
 int total_distance=0;
 char flag=0;
+char time_flag=0;
+char distance_flag=0;
+
 double old_lat;
 double old_long;
 
@@ -84,13 +89,16 @@ void GPS_list(){
 				strncpy(hours_str, time_str, 2);
 				strncpy(minutes_str, time_str + 2, 2);
 				strncpy(seconds_str, time_str + 4, 2);
-					 hours_str[1] = hours_str[1]+3;
+				hours_str[1] = hours_str[1]+3;
 				// Convert to integers
 				hh = atoi(hours_str)+3;
 				mm = atoi(minutes_str);
 				ss = atoi(seconds_str);
-		
-		
+				strcpy(time_str, hours_str);
+				strcat(time_str, ":");
+				strcat(time_str, minutes_str);
+				strcat(time_str, ":");
+				strcat(time_str, seconds_str);
 
 		
 		if(strcmp(GPS_Array[3],"N")==0)
@@ -206,7 +214,7 @@ void Distance(){
 		break;
 	}
 }
-void SendFloatToLCD(float num,uint8_t precision){
+void SendDistanceToLCD(float num,uint8_t precision){
     char buffer[10]="";
     int8_t i = 0;
 		uint8_t k = 0;
@@ -237,9 +245,8 @@ void SendFloatToLCD(float num,uint8_t precision){
 						buffer[i++] = (int_part % 10) + '0';
 						int_part /= 10;
 				}
-		}	
-		send_LCD_Command(0x01);
-    send_LCD_Command(0x80);
+		}
+		send_LCD_Command(0xC0);
 		i--;
 		for(; i >= 0; i--) {
         write_LCD_Data(buffer[i]);
@@ -303,4 +310,14 @@ void Mark_Removal(void){
 	Loc_Latitude[5] = 0;
 	Loc_Longitude[5] = 0;
 	Locations_Lenght = 5;
+}
+
+void set_time_on(void){
+		distance_flag = 0;
+		time_flag = 1;
+}
+
+void set_distance_on(void){
+		distance_flag = 1;
+		time_flag = 0;
 }
