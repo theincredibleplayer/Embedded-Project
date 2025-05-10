@@ -12,7 +12,7 @@ void initialize_LCD_Ports(void)
     GPIO_PORTB_DEN_R |= 0x3F;     // Enable digital function for PB0-PB5
     GPIO_PORTB_DIR_R |= 0x3F;     // Set PB0-PB5 as output
 
-    delay_ms(10000);
+    delay_ms(10);
     initialize_LCD();
     set_LCD_CursorLine(1);        // Select first line
 }
