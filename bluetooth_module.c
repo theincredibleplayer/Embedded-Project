@@ -46,9 +46,11 @@ void Bluetooth(){
 		}
 		if( c=='E'){
 				set_time_on();
+				Bluetooth_Write_String("Time displayed\n");
 		}
 		if( c=='F'){
 				set_distance_on();
+				Bluetooth_Write_String("Distance displayed\n");
 		}
 		if( c=='G'){
 				mute();
