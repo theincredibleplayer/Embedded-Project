@@ -23,6 +23,8 @@ char margin_index = 5; //index to tell whether i am near to any of the locations
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
 int nearest_index;
+float velocity_knot, velocity_km
+char velocity_array
 char Mark_Rejection[] = "Already  Defined";
 char Mark_Approval[] = "    Mark Set    ";
 char Locations_Lenght = 5;
@@ -111,6 +113,22 @@ void GPS_list(){
 		else
 				My_Longitude=-atof(GPS_Array[4]);
 		
+	if(strcmp(GPS_Array[3],"N")==0)
+		My_Latitude=atof(GPS_Array[2]);
+	else
+		My_Latitude=-atof(GPS_Array[2]);
+	
+	if(strcmp(GPS_Array[5],"E")==0)
+			My_Longitude=atof(GPS_Array[4]);
+	else
+		My_Longitude=-atof(GPS_Array[4]);
+	
+	velocity_knot = atof(GPS_Array[6]);
+	
+	velocity_km = velocity_knot* 1.852 ;
+	//insert a function that converts float to string to be printed on lcd
+	
+	
 	}
 
 }
