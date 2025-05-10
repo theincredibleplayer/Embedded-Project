@@ -28,14 +28,14 @@ void Audio_PlayTrack(uint8_t trackNum) {
     int i;
     uint8_t command[8];
 		if (mute_flag) return;
-
+		if (language_flag == LANG_ENGLISH) {
+			trackNum += 5;
+    }
 		if (trackNum == last_played_track) return;
 		
 		last_played_track = trackNum;
 	
-		if (language_flag == LANG_ENGLISH) {
-			trackNum += 5;
-    }
+
 		
     command[0] = 0x7E;
     command[1] = 0xFF;

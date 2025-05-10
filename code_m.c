@@ -20,7 +20,8 @@ int main(void)
 		initialize_LCD_Ports();
 		UART3_Init();
 		UART7_Init();
-		
+						set_time_on();
+
 		while(1){
 			GPS_ReadData();
 			GPS_list();
@@ -29,7 +30,7 @@ int main(void)
 					write_LCD_Line2_NoClear(time_str,8);
 			}
 			if(distance_flag){
-					SendDistanceToLCD(total_distance,4);
+					SendDistanceToLCD(total_distance,2);
 			}
 			Bluetooth();
 			

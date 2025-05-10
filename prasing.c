@@ -23,8 +23,8 @@ char margin_index = 5; //index to tell whether i am near to any of the locations
 float R = 6378000; // radius of the globe
 float Distance_Arr[5];
 int nearest_index;
-float velocity_knot, velocity_km
-char velocity_array
+float velocity_knot, velocity_km;
+char velocity_array;
 char Mark_Rejection[] = "Already  Defined";
 char Mark_Approval[] = "    Mark Set    ";
 char Locations_Lenght = 5;
@@ -35,7 +35,7 @@ char Location_index;
     char hours_str[2]="";
 		char minutes_str[2]="";
 		char seconds_str[2]="";
-		char time_str[8]="";
+		char time_str[8]="00:00:00";
 
 
 //
@@ -75,7 +75,7 @@ void GPS_ReadData(){
 
 // transforms string into elements in an array and we use the data we want 
 void GPS_list(){
-		char time_str[6] ="";
+		char time_str_2[6] ="";
 		char No_tokens=0;
 		token=strtok(GPS,",");
 		do{
@@ -85,22 +85,28 @@ void GPS_list(){
 		}while(token!=NULL);
 	
 	
-		if(strcmp(GPS_Array[1],"A")==0){
-				strcpy(time_str,GPS_Array[0]);
+		if(strcmp(GPS_Array[1],"A") == 0){
+				strcpy(time_str_2,GPS_Array[0]);
 				 // Copy substrings
-				strncpy(hours_str, time_str, 2);
-				strncpy(minutes_str, time_str + 2, 2);
-				strncpy(seconds_str, time_str + 4, 2);
+				strncpy(hours_str, time_str_2, 2);
+				strncpy(minutes_str, time_str_2 + 2, 2);
+				strncpy(seconds_str, time_str_2 + 4, 2);
 				hours_str[1] = hours_str[1]+3;
 				// Convert to integers
 				hh = atoi(hours_str)+3;
 				mm = atoi(minutes_str);
 				ss = atoi(seconds_str);
-				strcpy(time_str, hours_str);
-				strcat(time_str, ":");
-				strcat(time_str, minutes_str);
-				strcat(time_str, ":");
-				strcat(time_str, seconds_str);
+				UART0_SendString(hours_str);
+							UART0_SendString(minutes_str);
+
+							UART0_SendString(seconds_str);
+
+				time_str[0] = hours_str[0];
+				time_str[1] = hours_str[1];
+				time_str[3] = minutes_str[0];
+				time_str[4] = minutes_str[1];
+				time_str[6] = seconds_str[0];
+				time_str[7] = seconds_str[1];
 
 		
 		if(strcmp(GPS_Array[3],"N")==0)
