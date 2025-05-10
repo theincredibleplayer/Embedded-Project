@@ -4,7 +4,7 @@
 #include "GPIO_Systick.h"
 #include <math.h>  
 
-
+#include <TM4C123.h>
 
 void UART0_Init(void) {
     SYSCTL_RCGCUART_R |= 0x01;          // Enable UART0 clock
@@ -101,7 +101,7 @@ void UART0_SendNewLine(){
 		UART0_SendChar('\n');
 }
 
-
+//***************************************************
 void UART5_Init(void) {
 		SYSCTL_RCGCUART_R |= 0x20;
 		SYSCTL_RCGCGPIO_R |= 0x10;
@@ -115,6 +115,7 @@ void UART5_Init(void) {
 		UART5_FBRD_R = 11;      // Fractional part
 		UART5_LCRH_R = 0x60;
 		UART5_CTL_R |= (UART_CTL_TXE | UART_CTL_RXE | UART_CTL_UARTEN);
+	
 }
 
 
