@@ -25,7 +25,11 @@ int main(void)
 		while(1){
 			GPS_ReadData();
 			GPS_list();
-			Distance();
+			if(My_Latitude == 0.0){
+				
+			}else{
+				Distance();
+			}
 			if(time_flag){
 					write_LCD_Line2_NoClear(time_str,8);
 			}
