@@ -14,7 +14,7 @@ void initialize_LCD_Ports(void)
 
     delay_ms(10000);
     initialize_LCD();
-    send_LCD_Command(0x80);       // Move cursor to first row, first column
+    set_LCD_CursorLine(1);        // Select first line
 }
 
 void write_LCD_Data(unsigned char data)
@@ -49,19 +49,55 @@ void send_LCD_Command(unsigned char command)
 
 void write_LCD_String(char *str, unsigned char length)
 {
-	  char i;
-		send_LCD_Command(0x01); 
-		send_LCD_Command(0x80);
+    char i;
+    send_LCD_Command(0x01); 
+    send_LCD_Command(0x80);
     for(i = 0; i < length; i++) {
-				if(i==16){
-						send_LCD_Command(0xC0);
-				}
+        if(i == 16) {
+            send_LCD_Command(0xC0);
+        }
+        write_LCD_Data(str[i]);
+    }
+}
+
+void write_LCD_Line2_NoClear(char *str, unsigned char length)
+{
+    char i;
+    send_LCD_Command(0xC0);
+    for(i = 0; i < length; i++) {
         write_LCD_Data(str[i]);
     }
 }
 
 void initialize_LCD(void)
 {
+    // === Required wake-up sequence (8-bit to 4-bit mode) ===
+    delay_ms(10000);
+    send_To_Data_Port(0x03);
+    GPIO_PORTB_DATA_R &= ~(1<<4);  // RS = 0
+    GPIO_PORTB_DATA_R |= (1<<5);   // EN = 1
+    delay_ms(10000);
+    GPIO_PORTB_DATA_R &= ~(1<<5);  // EN = 0
+
+    delay_ms(10000);
+    send_To_Data_Port(0x03);
+    GPIO_PORTB_DATA_R |= (1<<5);
+    delay_ms(10000);
+    GPIO_PORTB_DATA_R &= ~(1<<5);
+
+    delay_ms(10000);
+    send_To_Data_Port(0x03);
+    GPIO_PORTB_DATA_R |= (1<<5);
+    delay_ms(10000);
+    GPIO_PORTB_DATA_R &= ~(1<<5);
+
+    delay_ms(10000);
+    send_To_Data_Port(0x02);  // Switch to 4-bit mode
+    GPIO_PORTB_DATA_R |= (1<<5);
+    delay_ms(10000);
+    GPIO_PORTB_DATA_R &= ~(1<<5);
+
+    // === Standard LCD setup ===
     send_LCD_Command(0x28);  // Function set: 4-bit, 2 lines, 5x8 dots
     send_LCD_Command(0x06);  // Entry mode set: increment cursor
     send_LCD_Command(0x0C);  // Display on, cursor off
@@ -70,7 +106,7 @@ void initialize_LCD(void)
 
 void send_To_Data_Port(unsigned char data)
 {
-    data &= 0x0F;  // Use only lower 4 bits
+    data &= 0x0F;                 // Use only lower 4 bits
     GPIO_PORTB_DATA_R &= ~0x0F;  // Clear PB0-PB3
     GPIO_PORTB_DATA_R |= data;   // Set PB0-PB3 with the nibble
 }
@@ -78,4 +114,13 @@ void send_To_Data_Port(unsigned char data)
 void delay_ms(long milliseconds)
 {
     while(milliseconds--);
+}
+
+// NEW FUNCTION TO SELECT LCD LINE
+void set_LCD_CursorLine(uint8_t line)
+{
+    if (line == 1)
+        send_LCD_Command(0x80);  // First line address
+    else if (line == 2)
+        send_LCD_Command(0xC0);  // Second line address
 }
