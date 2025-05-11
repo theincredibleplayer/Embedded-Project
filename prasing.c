@@ -48,6 +48,7 @@ char speed_flag = 0;
 double old_lat;
 double old_long;
 
+
 //function that takes the gps output and checks GPRMC
 void GPS_ReadData(){
 		char Inputchar;
@@ -165,6 +166,7 @@ void Distance(){
 	double Loc_Rad_Latitude;
 	double a,c;
 	float distance;
+
 	while(i < Locations_Lenght){
 		double Loc_Rad_Longitude = Loc_Longitude[i] * pi / 180;	
 		double Loc_Rad_Latitude = Loc_Latitude[i] * pi / 180;	
@@ -337,6 +339,7 @@ char* Mark_Location(void){
 	return Mark_Rejection;
 }
 
+
 void Mark_Removal(void){
 	Loc_Latitude[5] = 0;
 	Loc_Longitude[5] = 0;
@@ -360,3 +363,4 @@ void set_speed_on(void){
 		time_flag = 0;
 		speed_flag = 1;
 }
+
