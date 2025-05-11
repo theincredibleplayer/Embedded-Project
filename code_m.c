@@ -20,21 +20,28 @@ int main(void)
 		initialize_LCD_Ports();
 		UART3_Init();
 		UART7_Init();
-						set_time_on();
+		set_time_on();
 
 		while(1){
 			GPS_ReadData();
 			GPS_list();
 			if(My_Latitude == 0.0){
-				
+					write_LCD_Line2_NoClear("    NO SIGNAL   ",16); // checks for signal at the start to avoid incorrect distance calculations
 			}else{
 				Distance();
-			}
-			if(time_flag){
-					write_LCD_Line2_NoClear(time_str,8);
-			}
-			if(distance_flag){
-					SendDistanceToLCD(total_distance,2);
+				if(strcmp(GPS_Array[1],"A") == 0){
+							if(time_flag){
+									write_LCD_Line2_NoClear(time_str,8);
+							}
+							if(distance_flag){
+									SendDistanceToLCD(total_distance,2);
+							}
+							if(speed_flag){
+									SendDistanceToLCD(velocity_km,2);
+							}
+					}else{
+							write_LCD_Line2_NoClear("    NO SIGNAL   ",16);
+					}
 			}
 			Bluetooth();
 			

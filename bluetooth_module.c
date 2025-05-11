@@ -40,6 +40,10 @@ void Bluetooth(){
 				set_time_on();
 				Bluetooth_Write_String("Time displayed\n");	//sent through TX7 to the mobile app terminal
 		}
+		if( c=='B'){
+				set_speed_on();
+				Bluetooth_Write_String("Speed displayed\n");	//sent through TX7 to the mobile app terminal
+		}
 		if( c=='F'){
 				set_distance_on();
 				Bluetooth_Write_String("Distance displayed\n");	//sent through TX7 to the mobile app terminal

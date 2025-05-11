@@ -30,6 +30,9 @@ extern double old_long;
 //-----------------------------------------------------
 extern char time_flag;
 extern char distance_flag;
+extern char speed_flag;
+extern float velocity_knot, velocity_km;
+extern char velocity_array;
 void GPS_ReadData();
 void GPS_list();
 void Distance();

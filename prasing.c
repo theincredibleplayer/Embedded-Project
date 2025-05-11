@@ -40,9 +40,10 @@ char Location_index;
 
 //
 int total_distance=0;
-char flag=0;
-char time_flag=0;
-char distance_flag=0;
+char flag = 0;
+char time_flag = 0;
+char distance_flag = 0;
+char speed_flag = 0;
 
 double old_lat;
 double old_long;
@@ -75,6 +76,7 @@ void GPS_ReadData(){
 
 // transforms string into elements in an array and we use the data we want 
 void GPS_list(){
+		int hours;
 		char time_str_2[6] ="";
 		char No_tokens=0;
 		token=strtok(GPS,",");
@@ -91,15 +93,20 @@ void GPS_list(){
 				strncpy(hours_str, time_str_2, 2);
 				strncpy(minutes_str, time_str_2 + 2, 2);
 				strncpy(seconds_str, time_str_2 + 4, 2);
-				hours_str[1] = hours_str[1]+3;
-				// Convert to integers
-				hh = atoi(hours_str)+3;
-				mm = atoi(minutes_str);
-				ss = atoi(seconds_str);
-				UART0_SendString(hours_str);
-							UART0_SendString(minutes_str);
+			    // Convert hours_str to int
+				hours = (hours_str[0] - '0') * 10 + (hours_str[1] - '0');
 
-							UART0_SendString(seconds_str);
+				// Add 3 hours with wrap-around at 24
+				hours = (hours + 3) % 24;
+
+				// Convert back to string manually
+				hours_str[0] = (hours / 10) + '0';
+				hours_str[1] = (hours % 10) + '0';
+				// Convert to integers
+
+				UART0_SendString(hours_str);
+				UART0_SendString(minutes_str);
+				UART0_SendString(seconds_str);
 
 				time_str[0] = hours_str[0];
 				time_str[1] = hours_str[1];
@@ -339,9 +346,17 @@ void Mark_Removal(void){
 void set_time_on(void){
 		distance_flag = 0;
 		time_flag = 1;
+		speed_flag = 0;
 }
 
 void set_distance_on(void){
 		distance_flag = 1;
 		time_flag = 0;
+		speed_flag = 0;
+}
+
+void set_speed_on(void){
+		distance_flag = 0;
+		time_flag = 0;
+		speed_flag = 1;
 }
